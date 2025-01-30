@@ -1,12 +1,5 @@
 
 
-PUT http://localhost:3000/api/usuario/1
+GET  http://localhost:3000/api/rol
 Content-Type: application/json
 
-{
-    "rol_idrol": 1,
-    "email": "email@gmail.com",
-    "contraseña": "1000",
-    "fechacreacion": "2024-10-02 20:00:00",
-    "estado": true
-}

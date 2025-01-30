@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const userRoutes = require('./src/routes/userRoutes');
+const rolRoutes = require('./src/routes/rol');
 
 const app = express();
 const port = 3000;
@@ -28,6 +29,7 @@ connection.connect((err) => {
 
 // Rutas
 app.use('/api', userRoutes(connection));
+app.use('/api', rolRoutes(connection))
 
 app.listen(port, () => {
   console.log(`Servidor ejecutandose en puerto: ${port}`);

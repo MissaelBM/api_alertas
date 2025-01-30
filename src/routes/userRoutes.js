@@ -10,6 +10,7 @@ module.exports = (connection) => {
   router.get('/usuario', controller.consultar);
   router.get('/usuario/:id', controller.consultarId);
   router.patch('/usuario/:id', controller.actualizarUsuario);
+  router.post('/usuario/login', controller.login);
 
   return router;
 };
