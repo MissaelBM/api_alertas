@@ -8,6 +8,9 @@ module.exports = (connection) => {
 
   router.post('/rol', controller.rol);
   router.get('/rol', controller.consultar);
+  router.get('/rol/:id', controller.consultarId);
+  router.patch('/rol/:id', controller.actualizarRol);
+ 
 
   return router;
 };

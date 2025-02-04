@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
-const userRoutes = require('./src/routes/userRoutes');
+const userRoutes = require('./src/routes/usuario');
 const rolRoutes = require('./src/routes/rol');
 
 const app = express();
