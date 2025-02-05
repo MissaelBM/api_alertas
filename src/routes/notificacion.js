@@ -1,10 +1,10 @@
 const express = require('express');
-const empresaController = require('../controllers/notificacion');
+const notificacionController = require('../controllers/notificacion');
 
 const router = express.Router();
 
 module.exports = (connection) => {
-  const controller = empresaController(connection);
+  const controller = notificacionController(connection);
 
   router.post('/notificacion', controller.notificacion);
   router.get('/notificacion', controller.consultar);

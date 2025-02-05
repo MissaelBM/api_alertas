@@ -2,7 +2,7 @@ module.exports = (connection) => {
     return {
         consultar: async (req, res) => {
             try {
-              const [rows] = await connection.promise().query('SELECT * FROM notificacion');
+              const [rows] = await connection.promise().query('SELECT * FROM guardado');
               res.status(200).json(rows);
             } catch (error) {
               console.error('Error:', error);
@@ -10,12 +10,11 @@ module.exports = (connection) => {
             }
       
           },
-      
           consultarId: async (req, res) => {
             const { id } = req.params;
       
             try {
-              const [rows] = await connection.promise().query('SELECT * FROM empresa WHERE idnotificacion = ?', [id]);
+              const [rows] = await connection.promise().query('SELECT * FROM guardado WHERE idguardado = ?', [id]);
       
               if (rows.length === 0) {
                 return res.status(404).json({ message: 'Notificacion no encontrada' });
@@ -27,67 +26,66 @@ module.exports = (connection) => {
               res.status(500).json({ message: 'Error' });
             }
           },
-          empresa: async (req, res) => {
+          guardado: async (req, res) => {
             const { nombre } = req.body;
       
             try {
       
               const [result] = await connection.promise().query(
-                'INSERT INTO notificacion (cliente_idcliente, promocion_idpromocion, fechayhora, leido) VALUES (?, ?, ?, ?)',
+                'INSERT INTO guardado (promocion_idpromocion, cliente_idcliente, fechaguardada) VALUES (?, ?, ?)',
                 [nombre]
               );
       
-              res.status(201).json({ message: 'Notificación registrada', notificacionId: result.insertId });
+              res.status(201).json({ message: 'Guardado registrada', guardadoId: result.insertId });
             } catch (error) {
-              console.error('Error al registrar notificación:', error);
-              res.status(500).json({ message: 'Error al registrar notificación' });
+              console.error('Error al registrar guardado:', error);
+              res.status(500).json({ message: 'Error al registrar guardado' });
             }
-          },  actualizarNotificacion: async (req, res) => {
+          },
+          actualizarGuardado: async (req, res) => {
             const { id } = req.params;
             const {cliente_idcliente , promocion_idpromocion, fechayhora, leido } = req.body;
       
             try {
-              let query = 'UPDATE notificacion SET ';
+              let query = 'UPDATE guardado SET ';
               const updates = [];
               const params = [];
       
-              if (cliente_idcliente ) {
-                updates.push('cliente_idcliente = ?');
-                params.push(cliente_idcliente);
-              }
-      
-              if (promocion_idpromocion) {
+              if (promocion_idpromocion ) {
                 updates.push('promocion_idpromocion = ?');
                 params.push(promocion_idpromocion);
               }
       
-              if (fechayhora) {
-                updates.push('fechayhora = ?');
-                params.push(fechayhora);
+              if (cliente_idcliente) {
+                updates.push('cliente_idcliente = ?');
+                params.push(cliente_idcliente);
               }
       
-              if (leido !== undefined) {
-                updates.push('leido = ?');
-                params.push(leido);
+              if (fechaguardada) {
+                updates.push('fechaguardada = ?');
+                params.push(fechaguardada);
               }
+      
+             
               if (updates.length === 0) {
                 return res.status(400).json({ message: 'Sin información' });
               }
       
-              query += updates.join(', ') + ' WHERE idnotificacion = ?';
+              query += updates.join(', ') + ' WHERE idguardado = ?';
               params.push(id);
       
               const [result] = await connection.promise().query(query, params);
       
               if (result.affectedRows === 0) {
-                return res.status(404).json({ message: 'notificacion no econtrada' });
+                return res.status(404).json({ message: 'guardado no econtrada' });
               }
       
-              res.status(200).json({ message: 'notificacion actualizada exitosamente' });
+              res.status(200).json({ message: 'Guardado actualizada exitosamente' });
             } catch (error) {
               console.error('Error:', error);
               res.status(500).json({ message: 'Error' });
             }
           }
+
     };
 };
