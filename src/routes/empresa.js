@@ -1,10 +1,10 @@
 const express = require('express');
-const rolController = require('../controllers/empresa');
+const empresaController = require('../controllers/empresa');
 
 const router = express.Router();
 
 module.exports = (connection) => {
-  const controller = rolController(connection);
+  const controller = empresaController(connection);
 
   router.post('/empresa', controller.empresa);
   router.get('/empresa', controller.consultar);

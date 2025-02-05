@@ -54,7 +54,7 @@ module.exports = (connection)=>{
           
                   if (nombre) {
                     updates.push('nombre = ?');
-                    params.push(rol_idrol);
+                    params.push(nombre);
                   }
           
                 
