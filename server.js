@@ -7,6 +7,7 @@ const empresaRoutes = require('./src/routes/empresa');
 const promocionRoutes = require('./src/routes/empresa');
 const notificacionRoutes = require('./src/routes/notificacion');
 const guardadoRoutes = require('./src/routes/guardado');
+const categoriaRoutes = require('./src/routes/categoria');
 
 const app = express();
 const port = 3000;
@@ -38,6 +39,7 @@ app.use('/api', empresaRoutes(connection));
 app.use('/api', promocionRoutes(connection));
 app.use('/api', notificacionRoutes(connection));
 app.use('/api', guardadoRoutes(connection));
+app.use('/api', categoriaRoutes(connection));
 
 app.listen(port, () => {
   console.log(`Servidor ejecutandose en puerto: ${port}`);
