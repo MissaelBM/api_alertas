@@ -1,5 +1,10 @@
 
 
-GET  http://localhost:3000/api/rol
-Content-Type: application/json
+POST http://localhost:3000/api/usuario/login  
+Content-Type: application/json  
 
+{
+    
+    "email": "usuario@nuevo.com",
+    "contraseña": "123456"
+}

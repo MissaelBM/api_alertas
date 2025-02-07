@@ -27,7 +27,7 @@ module.exports = (connection) => {
               res.status(500).json({ message: 'Error' });
             }
           },
-          empresa: async (req, res) => {
+          notificacion: async (req, res) => {
             const { nombre } = req.body;
       
             try {

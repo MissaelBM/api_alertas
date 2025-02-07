@@ -9,7 +9,7 @@ module.exports = (connection) => {
   router.post('/promocion', controller.promocion);
   router.get('/promocion', controller.consultar);
   router.get('/promocion/:id', controller.consultarId);
-  router.patch('/promocion/:id', controller.actualizarEmpresa);
+  router.patch('/promocion/:id', controller.actualizarPromocion);
  
 
   return router;
