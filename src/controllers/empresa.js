@@ -35,11 +35,11 @@ module.exports = (connection) => {
       try {
 
         const [result] = await connection.promise().query(
-          'INSERT INTO empresa (usuario_idusuario, nombre, descripcion, ubicacion) VALUES (?, ?, ?, ?)',
+          'INSERT INTO empresa (usuario_idusuario, nombre, descripcion, ubicacion, eliminado) VALUES (?, ?, ?, ?, ?)',
           [nombre]
         );
 
-        res.status(201).json({ message: 'Empresa registrado', rolId: result.insertId });
+        res.status(201).json({ message: 'Empresa registrada', rolId: result.insertId });
       } catch (error) {
         console.error('Error al registrar empresa:', error);
         res.status(500).json({ message: 'Error al registrar empresa' });
@@ -47,7 +47,7 @@ module.exports = (connection) => {
     },
     actualizarEmpresa: async (req, res) => {
       const { id } = req.params;
-      const {usuario_idusuario , nombre, descripcion, ubicacion } = req.body;
+      const {usuario_idusuario , nombre, descripcion, ubicacion, eliminado } = req.body;
 
       try {
         let query = 'UPDATE empresa SET ';
@@ -72,6 +72,11 @@ module.exports = (connection) => {
         if (ubicacion) {
           updates.push('ubicacion = ?');
           params.push(ubicacion);
+        }
+        
+        if (eliminado !== undefined) {
+          updates.push('eliminado = ?');
+          params.push(eliminado);
         }
 
         if (updates.length === 0) {
