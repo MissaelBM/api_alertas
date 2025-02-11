@@ -115,7 +115,7 @@ module.exports = (connection) => {
 
         const user = rows[0];
 
-        // Verificar contraseña
+       
         const isPasswordValid = await bcrypt.compare(contraseña, user.contraseña);
 
         if (!isPasswordValid) {
@@ -123,6 +123,25 @@ module.exports = (connection) => {
         }
 
         res.status(200).json({ message: 'Inicio de sesión exitoso', userId: user.id });
+      } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error' });
+      }
+    },
+    eliminarUsuario: async (req, res) => {
+      const { id } = req.params;
+
+      try {
+        const [result] = await connection.promise().query(
+          'UPDATE usuario SET eliminado = ? WHERE idusuario = ?',
+          [true, id]
+        );
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Usuario eliminado lógicamente' });
       } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error' });

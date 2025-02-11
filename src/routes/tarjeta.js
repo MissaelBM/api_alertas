@@ -10,6 +10,7 @@ module.exports = (connection) => {
   router.get('/tarjeta', controller.consultar);
   router.get('/tarjeta/:id', controller.consultarId);
   router.patch('/tarjeta/:id', controller.actualizarTarjeta);
+  router.delete('/tarjeta/:id', controller.eliminarTarjeta);
  
 
   return router;

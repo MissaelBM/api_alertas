@@ -16,7 +16,7 @@ module.exports = (connection) => {
       try {
         const [result] = await connection.promise().query(
           'INSERT INTO rol (nombre, eliminado) VALUES (?, ?)',
-          [nombre, false] // Asegúrate de que el rol se cree como no eliminado
+          [nombre, false] 
         );
 
         res.status(201).json({ message: 'Rol registrado', rolId: result.insertId });

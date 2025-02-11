@@ -4,7 +4,7 @@ module.exports = (connection) => {
   return {
     consultar: async (req, res) => {
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM empresa');
+        const [rows] = await connection.promise().query('SELECT * FROM empresa WHERE eliminado = ?', [false]);
         res.status(200).json(rows);
       } catch (error) {
         console.error('Error:', error);
@@ -17,7 +17,7 @@ module.exports = (connection) => {
       const { id } = req.params;
 
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM empresa WHERE idempresa = ?', [id]);
+        const [rows] = await connection.promise().query('SELECT * FROM empresa WHERE idempresa = ? AND eliminado = ?', [id, false]);
 
         if (rows.length === 0) {
           return res.status(404).json({ message: 'Empresa no encontrada' });
@@ -93,6 +93,26 @@ module.exports = (connection) => {
         }
 
         res.status(200).json({ message: 'Empresa actualizada exitosamente' });
+      } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error' });
+      }
+    },
+
+    eliminarRol: async (req, res) => {
+      const { id } = req.params;
+
+      try {
+        const [result] = await connection.promise().query(
+          'UPDATE empresa SET eliminado = ? WHERE idempresa = ?',
+          [true, id]
+        );
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Empresa no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Empresa eliminada ' });
       } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error' });
