@@ -8,14 +8,15 @@ const promocionRoutes = require('./src/routes/empresa');
 const notificacionRoutes = require('./src/routes/notificacion');
 const guardadoRoutes = require('./src/routes/guardado');
 const categoriaRoutes = require('./src/routes/categoria');
+const metododepagoRoutes = require('./src/routes/metododepago');
 
 const app = express();
 const port = 3000;
 
-// Middleware
+
 app.use(bodyParser.json());
 
-// Conexión a MySQL
+
 const connection = mysql.createConnection({
     host: '127.0.0.1',
     port: 3306,
@@ -32,7 +33,7 @@ connection.connect((err) => {
   console.log('Conectado');
 });
 
-// Rutas
+
 app.use('/api', userRoutes(connection));
 app.use('/api', rolRoutes(connection));
 app.use('/api', empresaRoutes(connection));
@@ -40,6 +41,7 @@ app.use('/api', promocionRoutes(connection));
 app.use('/api', notificacionRoutes(connection));
 app.use('/api', guardadoRoutes(connection));
 app.use('/api', categoriaRoutes(connection));
+app.use('/api', metododepagoRoutes(connection));
 
 app.listen(port, () => {
   console.log(`Servidor ejecutandose en puerto: ${port}`);
