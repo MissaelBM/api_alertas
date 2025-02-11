@@ -11,6 +11,7 @@ module.exports = (connection) => {
   router.get('/usuario/:id', controller.consultarId);
   router.patch('/usuario/:id', controller.actualizarUsuario);
   router.post('/usuario/login', controller.login);
+  router.delete('/usuario/:id', controller.eliminarUsuario);
 
   return router;
 };

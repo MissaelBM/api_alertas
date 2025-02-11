@@ -24,7 +24,7 @@ module.exports = (connection) => {
     },
     consultar: async (req, res) => {
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM usuario');
+        const [rows] = await connection.promise().query('SELECT * FROM usuario WHERE eliminado = ?', [false]);
         res.status(200).json(rows);
       } catch (error) {
         console.error('Error:', error);
@@ -37,7 +37,7 @@ module.exports = (connection) => {
       const { id } = req.params;
 
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM usuario WHERE idusuario = ?', [id]);
+        const [rows] = await connection.promise().query('SELECT * FROM usuario WHERE idusuario = ? AND eliminado = ?', [id, false]);
 
         if (rows.length === 0) {
           return res.status(404).json({ message: 'Usuario no encontrado' });
