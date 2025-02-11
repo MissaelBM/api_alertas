@@ -2,7 +2,7 @@ module.exports = (connection) => {
   return {
     consultar: async (req, res) => {
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM categoria');
+        const [rows] = await connection.promise().query('SELECT * FROM categoria WHERE eliminado = ?', false);
         res.status(200).json(rows);
       } catch (error) {
         console.error('Error:', error);
@@ -15,8 +15,8 @@ module.exports = (connection) => {
       try {
 
         const [result] = await connection.promise().query(
-          'INSERT INTO categoria (nombre) VALUES (?)',
-          [nombre]
+          'INSERT INTO categoria (nombre, eliminado) VALUES (?, ?)',
+          [nombre, false]
         );
 
         res.status(201).json({ message: 'Categoria registrada', rolId: result.insertId });
@@ -31,7 +31,7 @@ module.exports = (connection) => {
       const { id } = req.params;
 
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM categoria WHERE idcategoria = ?', [id]);
+        const [rows] = await connection.promise().query('SELECT * FROM categoria WHERE idcategoria = ? AND eliminado = ?', [id,false]);
 
         if (rows.length === 0) {
           return res.status(404).json({ message: 'Categoria no encontrada' });
@@ -58,7 +58,6 @@ module.exports = (connection) => {
         }
 
 
-
         if (updates.length === 0) {
           return res.status(400).json({ message: 'Sin información' });
         }
@@ -77,6 +76,26 @@ module.exports = (connection) => {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error' });
       }
-    }
+    },
+    eliminarCategoria: async (req, res) => {
+      const { id } = req.params;
+
+      try {
+          
+          const [result] = await connection.promise().query(
+              'UPDATE categoria SET eliminado = ? WHERE idcategoria = ?',
+              [true, id]
+          );
+
+          if (result.affectedRows === 0) {
+              return res.status(404).json({ message: 'Categoria no encontrada' });
+          }
+
+          res.status(200).json({ message: 'Categoria eliminada lógicamente' });
+      } catch (error) {
+          console.error('Error:', error);
+          res.status(500).json({ message: 'Error' });
+      }
+  }
   };
 };
