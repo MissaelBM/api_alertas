@@ -27,7 +27,7 @@ module.exports = (connection) => {
           res.status(500).json({ message: 'Error' });
         }
       },
-      empresa: async (req, res) => {
+      metododepago: async (req, res) => {
         const { nombre } = req.body;
   
         try {
@@ -43,7 +43,7 @@ module.exports = (connection) => {
           res.status(500).json({ message: 'Error al registrar método de pago' });
         }
       },
-      actualizarEmpresa: async (req, res) => {
+      actualizarMetododepago: async (req, res) => {
         const { id } = req.params;
         const {cliente_idcliente , tipo, eliminado } = req.body;
   

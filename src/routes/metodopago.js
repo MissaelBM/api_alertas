@@ -1,10 +1,10 @@
 const express = require('express');
-const guardadoController = require('../controllers/metododepago');
+const metododepagoController = require('../controllers/metododepago');
 
 const router = express.Router();
 
 module.exports = (connection) => {
-  const controller = guardadoController(connection);
+  const controller = metododepagoController(connection);
 
   router.post('/metododepago', controller.metododepago);
   router.get('/metododepago', controller.consultar);
