@@ -10,6 +10,7 @@ module.exports = (connection) => {
   router.get('/rol', controller.consultar);
   router.get('/rol/:id', controller.consultarId);
   router.patch('/rol/:id', controller.actualizarRol);
+  router.delete('/rol/:id', controller.eliminarRol);
  
 
   return router;
