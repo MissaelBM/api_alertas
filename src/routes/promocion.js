@@ -10,7 +10,7 @@ module.exports = (connection) => {
   router.get('/promocion', controller.consultar);
   router.get('/promocion/:id', controller.consultarId);
   router.patch('/promocion/:id', controller.actualizarPromocion);
- 
+  router.delete('/promocion/:id', controller.eliminarPromocion);
 
   return router;
 };
