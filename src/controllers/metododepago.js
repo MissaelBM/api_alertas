@@ -2,7 +2,7 @@ module.exports = (connection) => {
     return {
       consultar: async (req, res) => {
         try {
-          const [rows] = await connection.promise().query('SELECT * FROM metododepago');
+          const [rows] = await connection.promise().query('SELECT * FROM metododepago WHERE eliminado = ?', [false]);
           res.status(200).json(rows);
         } catch (error) {
           console.error('Error:', error);
@@ -12,10 +12,10 @@ module.exports = (connection) => {
       },
   
       consultarId: async (req, res) => {
-        const { id } = req.params;
+        const { idmetodopago } = req.params;
   
         try {
-          const [rows] = await connection.promise().query('SELECT * FROM metododepago WHERE idmetododepago = ?', [id]);
+          const [rows] = await connection.promise().query('SELECT * FROM metododepago WHERE idmetododepago = ? AND eliminado = ?', [idmetodopago,false]);
   
           if (rows.length === 0) {
             return res.status(404).json({ message: 'Método de pago no encontrada' });
@@ -28,13 +28,13 @@ module.exports = (connection) => {
         }
       },
       metododepago: async (req, res) => {
-        const { nombre } = req.body;
+        const { cliente_idcliente, tipo} = req.body;
   
         try {
   
           const [result] = await connection.promise().query(
             'INSERT INTO metododepago (cliente_idcliente, tipo, eliminado) VALUES (?, ?, ?)',
-            [nombre]
+            [cliente_idcliente, tipo, false]
           );
   
           res.status(201).json({ message: 'Método de pago registrado', metodoId: result.insertId });
@@ -44,7 +44,7 @@ module.exports = (connection) => {
         }
       },
       actualizarMetododepago: async (req, res) => {
-        const { id } = req.params;
+        const { idmetodopago } = req.params;
         const {cliente_idcliente , tipo, eliminado } = req.body;
   
         try {
@@ -73,7 +73,7 @@ module.exports = (connection) => {
           }
   
           query += updates.join(', ') + ' WHERE idmetododepago = ?';
-          params.push(id);
+          params.push(idmetodopago);
   
           const [result] = await connection.promise().query(query, params);
   
@@ -86,7 +86,27 @@ module.exports = (connection) => {
           console.error('Error:', error);
           res.status(500).json({ message: 'Error' });
         }
-      }
+      },eliminarMetododepago: async (req, res) => {
+        const { idguardado } = req.params;
+
+        try {
+            
+            const [result] = await connection.promise().query(
+                'UPDATE metododepago SET eliminado = ? WHERE idmetododepago = ?',
+                [true, idguardado]
+            );
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ message: 'Metodo de pago no encontrada' });
+            }
+
+            res.status(200).json({ message: 'Metodo de pago eliminado lógicamente' });
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ message: 'Error' });
+        }
+    }
+
     };
   
   };

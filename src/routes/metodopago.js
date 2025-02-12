@@ -10,7 +10,7 @@ module.exports = (connection) => {
   router.get('/metododepago', controller.consultar);
   router.get('/metododepago/:id', controller.consultarId);
   router.patch('/metododepago/:id', controller.actualizarMetododepago);
- 
+  router.delete('/metododepago/:id', controller.eliminarMetododepago);
 
   return router;
 };
