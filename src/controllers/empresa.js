@@ -99,7 +99,7 @@ module.exports = (connection) => {
       }
     },
 
-    eliminarRol: async (req, res) => {
+    eliminarEmpresa: async (req, res) => {
       const { id } = req.params;
 
       try {

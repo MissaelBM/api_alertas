@@ -2,7 +2,7 @@ module.exports = (connection) => {
     return {
         consultar: async (req, res) => {
             try {
-              const [rows] = await connection.promise().query('SELECT * FROM guardado');
+              const [rows] = await connection.promise().query('SELECT * FROM guardado WHERE eliminado = ?', [false]);
               res.status(200).json(rows);
             } catch (error) {
               console.error('Error:', error);
@@ -14,7 +14,7 @@ module.exports = (connection) => {
             const { id } = req.params;
       
             try {
-              const [rows] = await connection.promise().query('SELECT * FROM guardado WHERE idguardado = ?', [id]);
+              const [rows] = await connection.promise().query('SELECT * FROM guardado WHERE idguardado = ? AND eliminado = ?', [id, false]);
       
               if (rows.length === 0) {
                 return res.status(404).json({ message: 'Notificacion no encontrada' });
@@ -27,13 +27,13 @@ module.exports = (connection) => {
             }
           },
           guardado: async (req, res) => {
-            const { nombre } = req.body;
+            const { promocion_idpromocion, cliente_idcliente, fechaguardada } = req.body;
       
             try {
       
               const [result] = await connection.promise().query(
-                'INSERT INTO guardado (promocion_idpromocion, cliente_idcliente, fechaguardada) VALUES (?, ?, ?)',
-                [nombre]
+                'INSERT INTO guardado (promocion_idpromocion, cliente_idcliente, fechaguardada, eliminado) VALUES (?, ?, ?, ?)',
+                [promocion_idpromocion, cliente_idcliente, fechaguardada, false]
               );
       
               res.status(201).json({ message: 'Guardado registrada', guardadoId: result.insertId });
@@ -44,7 +44,7 @@ module.exports = (connection) => {
           },
           actualizarGuardado: async (req, res) => {
             const { id } = req.params;
-            const {cliente_idcliente , promocion_idpromocion, fechayhora, leido } = req.body;
+            const {cliente_idcliente , promocion_idpromocion, fechaguardada} = req.body;
       
             try {
               let query = 'UPDATE guardado SET ';
@@ -85,6 +85,27 @@ module.exports = (connection) => {
               console.error('Error:', error);
               res.status(500).json({ message: 'Error' });
             }
+          },
+
+          eliminarGuardado: async (req, res) => {
+              const { idguardado } = req.params;
+    
+              try {
+                  
+                  const [result] = await connection.promise().query(
+                      'UPDATE guardado SET eliminado = ? WHERE idguardado = ?',
+                      [true, idguardado]
+                  );
+    
+                  if (result.affectedRows === 0) {
+                      return res.status(404).json({ message: 'Guardado no encontrada' });
+                  }
+    
+                  res.status(200).json({ message: 'Guardado eliminado lógicamente' });
+              } catch (error) {
+                  console.error('Error:', error);
+                  res.status(500).json({ message: 'Error' });
+              }
           }
 
     };
