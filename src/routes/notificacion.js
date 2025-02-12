@@ -10,7 +10,7 @@ module.exports = (connection) => {
   router.get('/notificacion', controller.consultar);
   router.get('/notificacion/:id', controller.consultarId);
   router.patch('/notificacion/:id', controller.actualizarNotificacion);
- 
+  router.delete('/notificacion/:id', controller.eliminarNotificacion); 
 
   return router;
 };
