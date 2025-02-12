@@ -10,7 +10,7 @@ module.exports = (connection) => {
             }
         },
 
-        permiso: async (req, res) => {
+        modulo: async (req, res) => {
             const { permiso_idpermiso, rol_idrol } = req.body;
 
             try {
@@ -43,7 +43,7 @@ module.exports = (connection) => {
             }
         },
 
-        actualizarPermiso: async (req, res) => {
+        actualizarModulo: async (req, res) => {
             const { idpermiso } = req.params;
             const { permiso_idpermiso, rol_idrol } = req.body;
 
@@ -77,13 +77,13 @@ module.exports = (connection) => {
             }
         },
 
-        eliminarPermiso: async (req, res) => {
+        eliminarModulo: async (req, res) => {
             const { idpermiso } = req.params;
 
             try {
                 const [result] = await connection.promise().query(
                     'UPDATE permiso SET eliminado = ? WHERE idpermiso = ?',
-                    [true, id]
+                    [true, idpermiso]
                 );
 
                 if (result.affectedRows === 0) {

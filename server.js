@@ -12,6 +12,7 @@ const metododepagoRoutes = require('./src/routes/metododepago');
 const permisoRoutes = require('./src/routes/permiso');
 const clienteRoutes = require('./src/routes/cliente');
 const moduloRoutes = require('./src/routes/modulo');
+const movimientoRoutes = require('./src/routes/movimiento');
 
 const app = express();
 const port = 3000;
@@ -48,6 +49,7 @@ app.use('/api', metododepagoRoutes(connection));
 app.use('/api', permisoRoutes(connection));
 app.use('/api', clienteRoutes(connection));
 app.use('/api', moduloRoutes(connection));
+app.use('/api', movimientoRoutes(connection));
 
 app.listen(port, () => {
   console.log(`Servidor ejecutandose en puerto: ${port}`);
