@@ -11,29 +11,29 @@ module.exports = (connection) => {
         },
 
         modulo: async (req, res) => {
-            const { permiso_idpermiso, rol_idrol } = req.body;
+            const { permiso_idpermiso, rol_idrol,idcreador, idactualizacion, fechacreacion, fechaactualizacion } = req.body;
 
             try {
                 const [result] = await connection.promise().query(
-                    'INSERT INTO modulo (permiso_idpermiso, rol_idrol, eliminado) VALUES (?, ?, ?)',
-                    [permiso_idpermiso, rol_idrol, false]
+                    'INSERT INTO modulo (permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado) VALUES (?, ?, ?)',
+                    [permiso_idpermiso, rol_idrol,idcreador, idactualizacion, fechacreacion, fechaactualizacion, false]
                 );
 
-                res.status(201).json({ message: 'Rol registrado', permisoId: result.insertId });
+                res.status(201).json({ message: 'Modulo registrado', permisoId: result.insertId });
             } catch (error) {
-                console.error('Error al registrar permiso:', error);
-                res.status(500).json({ message: 'Error al registrar permiso' });
+                console.error('Error al registrar modulo:', error);
+                res.status(500).json({ message: 'Error al registrar modulo' });
             }
         },
 
         consultarId: async (req, res) => {
-            const { idpermiso } = req.params;
+            const { id } = req.params;
 
             try {
-                const [rows] = await connection.promise().query('SELECT * FROM permiso WHERE idpermiso = ? AND eliminado = ?', [idpermiso, false]);
+                const [rows] = await connection.promise().query('SELECT * FROM modulo WHERE idmodulo = ? AND eliminado = ?', [id, 0]);
 
                 if (rows.length === 0) {
-                    return res.status(404).json({ message: 'Permiso no encontrado' });
+                    return res.status(404).json({ message: 'Modulo no encontrado' });
                 }
 
                 res.status(200).json(rows[0]);
@@ -44,33 +44,74 @@ module.exports = (connection) => {
         },
 
         actualizarModulo: async (req, res) => {
-            const { idpermiso } = req.params;
-            const { permiso_idpermiso, rol_idrol } = req.body;
-
+            const { idmodulo } = req.params;
+            console.log("Valor de idmodulo:", idmodulo);
+            const id = parseInt(idmodulo, 10);
+        
+            if (isNaN(id)) {
+                return res.status(400).json({ message: 'ID no válido' });
+            }
+        
+            // Depura el cuerpo de la solicitud
+            console.log("Cuerpo de la solicitud:", req.body);
+        
+            const { permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion } = req.body;
+        
             try {
-                let query = 'UPDATE permiso SET ';
+                let query = 'UPDATE modulo SET ';
                 const updates = [];
                 const params = [];
-
-                if (permiso_idpermiso) {
+        
+                // Verifica y agrega campos para actualizar
+                if (permiso_idpermiso !== undefined) {
                     updates.push('permiso_idpermiso = ?');
-                    params.push( permiso_idpermiso);
+                    params.push(permiso_idpermiso);
                 }
-
+        
+                if (rol_idrol !== undefined) {
+                    updates.push('rol_idrol = ?');
+                    params.push(rol_idrol);
+                }
+        
+                if (idcreador !== undefined) {
+                    updates.push('idcreador = ?');
+                    params.push(idcreador);
+                }
+        
+                if (idactualizacion !== undefined) {
+                    updates.push('idactualizacion = ?');
+                    params.push(idactualizacion);
+                }
+        
+                if (fechacreacion !== undefined) {
+                    updates.push('fechacreacion = ?');
+                    params.push(fechacreacion);
+                }
+        
+                if (fechaactualizacion !== undefined) {
+                    updates.push('fechaactualizacion = ?');
+                    params.push(fechaactualizacion);
+                }
+        
+                // Si no hay campos para actualizar
                 if (updates.length === 0) {
                     return res.status(400).json({ message: 'Sin información' });
                 }
-
-                query += updates.join(', ') + ' WHERE idpermiso = ?';
-                params.push(idpermiso);
-
+        
+                // Completa la consulta SQL
+                query += updates.join(', ') + ' WHERE idmodulo = ?';
+                params.push(id);
+        
+                // Ejecuta la consulta
                 const [result] = await connection.promise().query(query, params);
-
+        
+                // Verifica si se actualizó algún registro
                 if (result.affectedRows === 0) {
-                    return res.status(404).json({ message: 'Permiso no encontrado' });
+                    return res.status(404).json({ message: 'Modulo no encontrado' });
                 }
-
-                res.status(200).json({ message: 'Permiso actualizado exitosamente' });
+        
+                // Respuesta exitosa
+                res.status(200).json({ message: 'Modulo actualizado exitosamente' });
             } catch (error) {
                 console.error('Error:', error);
                 res.status(500).json({ message: 'Error' });

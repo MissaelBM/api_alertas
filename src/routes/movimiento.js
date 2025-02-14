@@ -6,11 +6,11 @@ const router = express.Router();
 module.exports = (connection) => {
   const controller = movimientoController(connection);
 
-  router.post('/movimiento', controller.modulo);
+  router.post('/movimiento', controller.movimiento);
   router.get('/movimiento', controller.consultar);
   router.get('/movimiento/:id', controller.consultarId);
-  router.patch('/movimiento/:id', controller.actualizarModulo);
-  router.delete('/movimiento/:id', controller.eliminarModulo); 
+  router.patch('/movimiento/:id', controller.actualizarMovimiento);
+  router.delete('/movimiento/:id', controller.eliminarMovimiento); 
 
   return router;
 };

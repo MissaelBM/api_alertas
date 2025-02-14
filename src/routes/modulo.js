@@ -9,7 +9,7 @@ module.exports = (connection) => {
   router.post('/modulo', controller.modulo);
   router.get('/modulo', controller.consultar);
   router.get('/modulo/:id', controller.consultarId);
-  router.patch('/modulo/:id', controller.actualizarModulo);
+  router.patch('/modulo/:idmodulo', controller.actualizarModulo);
   router.delete('/modulo/:id', controller.eliminarModulo); 
 
   return router;

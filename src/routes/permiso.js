@@ -8,9 +8,9 @@ module.exports = (connection) => {
 
   router.post('/permiso', controller.permiso);
   router.get('/permiso', controller.consultar);
-  router.get('/permiso/:id', controller.consultarId);
-  router.patch('/permiso/:id', controller.actualizarPromocion);
-  router.delete('/permiso/:id', controller.eliminarPromocion);
+  router.get('/permiso/:idpermiso', controller.consultarId);
+  router.patch('/permiso/:idpermiso', controller.actualizarPermiso);
+  router.delete('/permiso/:idpermiso', controller.eliminarPermiso);
 
   return router;
 };

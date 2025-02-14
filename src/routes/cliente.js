@@ -4,13 +4,13 @@ const clienteController = require('../controllers/cliente');
 const router = express.Router();
 
 module.exports = (connection) => {
-  const controller = categoriaController(connection);
+  const controller = clienteController(connection);
 
   router.post('/cliente', controller.cliente);
   router.get('/cliente', controller.consultar);
   router.get('/cliente/:id', controller.consultarId);
-  router.patch('/cliente/:id', controller.actualizarCategoria);
-  router.delete('/cliente/:id', controller.eliminarCategoria);
+  router.patch('/cliente/:id', controller.actualizarCliente);
+  router.delete('/cliente/:id', controller.eliminarCliente);
 
   return router;
 };

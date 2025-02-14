@@ -29,7 +29,7 @@ module.exports = (connection) => {
             }
         },
   
-        notificacion: async (req, res) => {
+        cliente: async (req, res) => {
             const { usuario_idusuario, nombre, telefono, ubicacion } = req.body;
   
             try {
@@ -46,7 +46,7 @@ module.exports = (connection) => {
             }
         },
   
-        actualizarNotificacion: async (req, res) => {
+        actualizarCliente: async (req, res) => {
             const { idcliente } = req.params;
             const { usuario_idusuario, nombre, telefono, ubicacion} = req.body;
   
@@ -95,7 +95,7 @@ module.exports = (connection) => {
             }
         },
   
-        eliminarNotificacion: async (req, res) => {
+        eliminarCliente: async (req, res) => {
             const { idcliente } = req.params;
   
             try {
