@@ -12,11 +12,11 @@ module.exports = (connection) => {
         },
   
         consultarId: async (req, res) => {
-            const { idcliente } = req.params;
+            const { id } = req.params;
   
             try {
                 
-                const [rows] = await connection.promise().query('SELECT * FROM cliente WHERE idcliente = ? AND eliminado = ?', [idcliente, false]);
+                const [rows] = await connection.promise().query('SELECT * FROM cliente WHERE idcliente = ? AND eliminado = ?', [id, 0]);
   
                 if (rows.length === 0) {
                     return res.status(404).json({ message: 'Cliente no encontrado' });
@@ -31,23 +31,30 @@ module.exports = (connection) => {
   
         cliente: async (req, res) => {
             const { usuario_idusuario, nombre, telefono, ubicacion } = req.body;
-  
+        
             try {
                
+                const { lat, lng } = ubicacion;
+        
+             
+                const pointWKT = `POINT(${lng} ${lat})`;
+        
+                
                 const [result] = await connection.promise().query(
-                    'INSERT INTO notificacion (usuario_idusuario, nombre, telefono, ubicacion, eliminado) VALUES (?, ?, ?, ?, ?)',
-                    [usuario_idusuario, nombre, telefono, ubicacion, false]
+                    'INSERT INTO cliente (usuario_idusuario, nombre, telefono, ubicacion, eliminado) VALUES (?, ?, ?, ST_GeomFromText(?), ?)',
+                    [usuario_idusuario, nombre, telefono, pointWKT, 0]
                 );
-  
-                res.status(201).json({ message: 'Notificación registrada', notificacionId: result.insertId });
+        
+                res.status(201).json({ message: 'Cliente registrado', clienteId: result.insertId });
             } catch (error) {
-                console.error('Error al registrar notificación:', error);
-                res.status(500).json({ message: 'Error al registrar notificación' });
+                console.error('Error al registrar cliente:', error);
+                res.status(500).json({ message: 'Error al registrar cliente' });
             }
-        },
+        }
+   ,
   
         actualizarCliente: async (req, res) => {
-            const { idcliente } = req.params;
+            const { id } = req.params;
             const { usuario_idusuario, nombre, telefono, ubicacion} = req.body;
   
             try {
@@ -80,7 +87,7 @@ module.exports = (connection) => {
                 }
   
                 query += updates.join(', ') + ' WHERE idcliente = ?';
-                params.push(idcliente);
+                params.push(id);
   
                 const [result] = await connection.promise().query(query, params);
   
