@@ -1,11 +1,10 @@
 
 
-PATCH  http://localhost:3000/api/modulo/1
-Content-Type: application/json 
+PATCH  http://localhost:3000/api/usuario/2  
+Content-Type: application/json  
 
-{  
-   "fechacreacion": "2025-02-13T12:02:00"
-}
+
+
 
 
 

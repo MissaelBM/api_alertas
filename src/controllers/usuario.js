@@ -3,17 +3,17 @@ const bcrypt = require('bcrypt');
 module.exports = (connection) => {
   return {
     usuario: async (req, res) => {
-      const { rol_idrol, email, contraseña, fechacreacion, estado} = req.body;
+      const {rol_idrol, email, contraseña, fechacreacion, fechaactualizacion, idcreador, idactualizacion} = req.body;
 
       try {
         
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(contraseña, saltRounds);
+        
+        const hashedPasswordBinary = Buffer.from(contraseña, 'utf8');
 
       
         const [result] = await connection.promise().query(
-          'INSERT INTO usuario (rol_idrol, email, contraseña, fechacreacion, estado) VALUES (?, ?, ?, ?, ?)',
-          [rol_idrol, email, hashedPassword, fechacreacion, estado]
+          'INSERT INTO usuario (rol_idrol, email, contraseña, fechacreacion, fechaactualizacion, idcreador, idactualizacion, eliminado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+          [rol_idrol, email, hashedPasswordBinary, fechacreacion, fechaactualizacion, idcreador, idactualizacion, 0]
         );
 
         res.status(201).json({ message: 'Usuario registrado', userId: result.insertId });
@@ -24,7 +24,7 @@ module.exports = (connection) => {
     },
     consultar: async (req, res) => {
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM usuario WHERE eliminado = ?', [false]);
+        const [rows] = await connection.promise().query('SELECT * FROM usuario WHERE eliminado = ?', [0]);
         res.status(200).json(rows);
       } catch (error) {
         console.error('Error:', error);
@@ -37,7 +37,7 @@ module.exports = (connection) => {
       const { id } = req.params;
 
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM usuario WHERE idusuario = ? AND eliminado = ?', [id, false]);
+        const [rows] = await connection.promise().query('SELECT * FROM usuario WHERE idusuario = ? AND eliminado = ?', [id, 0]);
 
         if (rows.length === 0) {
           return res.status(404).json({ message: 'Usuario no encontrado' });
@@ -51,7 +51,7 @@ module.exports = (connection) => {
     },
     actualizarUsuario: async (req, res) => {
       const { id } = req.params;
-      const { rol_idrol, email, contraseña, estado } = req.body;
+      const { rol_idrol, email, contraseña, fechacreacion, fechaactualizacion, idcreador, idactualizacion } = req.body;
 
       try {
         let query = 'UPDATE usuario SET ';
@@ -69,16 +69,32 @@ module.exports = (connection) => {
         }
 
         if (contraseña) {
-          const saltRounds = 10;
-          const hashedPassword = await bcrypt.hash(contraseña, saltRounds);
+          const hashedPasswordBinary = Buffer.from(contraseña, 'utf8');  
           updates.push('contraseña = ?');
-          params.push(hashedPassword);
+          params.push(hashedPasswordBinary);
         }
 
-        if (estado !== undefined) {
-          updates.push('estado = ?');
-          params.push(estado);
-        }
+        if (idcreador) {
+          updates.push('idcreador = ?');
+          params.push(idcreador);
+      }
+
+      if (idactualizacion) {
+          updates.push('idactualizacion = ?');
+          params.push(idactualizacion);
+      }
+
+      if (fechacreacion) {
+          updates.push('fechacreacion = ?');
+          params.push(fechacreacion);
+      }
+
+      
+      if (fechaactualizacion !== undefined) {
+          updates.push('fechaactualizacion = ?');
+          params.push(fechaactualizacion);
+      }
+
 
         if (updates.length === 0) {
           return res.status(400).json({ message: 'Sin información' });
@@ -103,7 +119,7 @@ module.exports = (connection) => {
       const { email, contraseña } = req.body;
 
       try {
-        // Buscar usuario en la base de datos
+       
         const [rows] = await connection.promise().query(
           'SELECT * FROM usuario WHERE email = ?',
           [email]

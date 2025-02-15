@@ -2,7 +2,7 @@ module.exports = (connection) => {
     return {
         consultar: async (req, res) => {
             try {
-                // Solo selecciona notificaciones no eliminadas
+                
                 const [rows] = await connection.promise().query('SELECT * FROM cliente WHERE eliminado = ?', [false]);
                 res.status(200).json(rows);
             } catch (error) {
@@ -15,7 +15,7 @@ module.exports = (connection) => {
             const { idcliente } = req.params;
   
             try {
-                // Solo selecciona la notificación si no está eliminada
+                
                 const [rows] = await connection.promise().query('SELECT * FROM cliente WHERE idcliente = ? AND eliminado = ?', [idcliente, false]);
   
                 if (rows.length === 0) {
@@ -33,7 +33,7 @@ module.exports = (connection) => {
             const { usuario_idusuario, nombre, telefono, ubicacion } = req.body;
   
             try {
-                // Inserta la notificación con `eliminado` en `false`
+               
                 const [result] = await connection.promise().query(
                     'INSERT INTO notificacion (usuario_idusuario, nombre, telefono, ubicacion, eliminado) VALUES (?, ?, ?, ?, ?)',
                     [usuario_idusuario, nombre, telefono, ubicacion, false]
@@ -99,7 +99,7 @@ module.exports = (connection) => {
             const { idcliente } = req.params;
   
             try {
-                // Marca la notificación como eliminada
+                
                 const [result] = await connection.promise().query(
                     'UPDATE cliente SET eliminado = ? WHERE idcliente = ?',
                     [true, idcliente]

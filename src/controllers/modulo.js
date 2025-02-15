@@ -2,7 +2,7 @@ module.exports = (connection) => {
     return {
         consultar: async (req, res) => {
             try {
-                const [rows] = await connection.promise().query('SELECT * FROM modulo WHERE eliminado = ?', [false]);
+                const [rows] = await connection.promise().query('SELECT * FROM modulo WHERE eliminado = ?', [0]);
                 res.status(200).json(rows);
             } catch (error) {
                 console.error('Error:', error);
@@ -11,20 +11,20 @@ module.exports = (connection) => {
         },
 
         modulo: async (req, res) => {
-            const { permiso_idpermiso, rol_idrol,idcreador, idactualizacion, fechacreacion, fechaactualizacion } = req.body;
-
+            const { permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion } = req.body;
+          
             try {
-                const [result] = await connection.promise().query(
-                    'INSERT INTO modulo (permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado) VALUES (?, ?, ?)',
-                    [permiso_idpermiso, rol_idrol,idcreador, idactualizacion, fechacreacion, fechaactualizacion, false]
-                );
-
-                res.status(201).json({ message: 'Modulo registrado', permisoId: result.insertId });
+              const [result] = await connection.promise().query(
+                'INSERT INTO modulo (permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion, 0]
+              );
+          
+              res.status(201).json({ message: 'Módulo registrado', moduloId: result.insertId });
             } catch (error) {
-                console.error('Error al registrar modulo:', error);
-                res.status(500).json({ message: 'Error al registrar modulo' });
+              console.error('Error al registrar módulo:', error);
+              res.status(500).json({ message: 'Error al registrar módulo' });
             }
-        },
+          },
 
         consultarId: async (req, res) => {
             const { id } = req.params;
@@ -52,7 +52,7 @@ module.exports = (connection) => {
                 return res.status(400).json({ message: 'ID no válido' });
             }
         
-            // Depura el cuerpo de la solicitud
+        
             console.log("Cuerpo de la solicitud:", req.body);
         
             const { permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion } = req.body;
