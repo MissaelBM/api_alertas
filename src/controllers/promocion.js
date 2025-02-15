@@ -2,8 +2,8 @@ module.exports = (connection) => {
   return {
       consultar: async (req, res) => {
           try {
-              // Solo selecciona promociones no eliminadas
-              const [rows] = await connection.promise().query('SELECT * FROM promocion WHERE eliminado = ?', [false]);
+             
+              const [rows] = await connection.promise().query('SELECT * FROM promocion WHERE eliminado = ?', [0]);
               res.status(200).json(rows);
           } catch (error) {
               console.error('Error:', error);
@@ -15,8 +15,8 @@ module.exports = (connection) => {
           const { id } = req.params;
 
           try {
-              // Solo selecciona la promoción si no está eliminada
-              const [rows] = await connection.promise().query('SELECT * FROM promocion WHERE idpromocion = ? AND eliminado = ?', [id, false]);
+             
+              const [rows] = await connection.promise().query('SELECT * FROM promocion WHERE idpromocion = ? AND eliminado = ?', [id, 0]);
 
               if (rows.length === 0) {
                   return res.status(404).json({ message: 'Promoción no encontrada' });
@@ -33,13 +33,13 @@ module.exports = (connection) => {
           const { empresa_idempresa, nombre, descripcion, precio, vigenciainicio, vigenciafin, tipo } = req.body;
 
           try {
-              // Inserta la promoción con `eliminado` en `false`
+              
               const [result] = await connection.promise().query(
                   'INSERT INTO promocion (empresa_idempresa, nombre, descripcion, precio, vigenciainicio, vigenciafin, tipo, eliminado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                  [empresa_idempresa, nombre, descripcion, precio, vigenciainicio, vigenciafin, tipo, false]
+                  [empresa_idempresa, nombre, descripcion, precio, vigenciainicio, vigenciafin, tipo, 0]
               );
 
-              res.status(201).json({ message: 'Promoción registrada', promId: result.insertId });
+              res.status(201).json({ message: 'Promoción registrada', promocionId: result.insertId });
           } catch (error) {
               console.error('Error al registrar promoción:', error);
               res.status(500).json({ message: 'Error al registrar promoción' });
@@ -55,37 +55,37 @@ module.exports = (connection) => {
               const updates = [];
               const params = [];
 
-              if (empresa_idempresa !== undefined) {
+              if (empresa_idempresa) {
                   updates.push('empresa_idempresa = ?');
                   params.push(empresa_idempresa);
               }
 
-              if (nombre !== undefined) {
+              if (nombre) {
                   updates.push('nombre = ?');
                   params.push(nombre);
               }
 
-              if (descripcion !== undefined) {
+              if (descripcion) {
                   updates.push('descripcion = ?');
                   params.push(descripcion);
               }
 
-              if (precio !== undefined) {
+              if (precio) {
                   updates.push('precio = ?');
                   params.push(precio);
               }
 
-              if (vigenciainicio !== undefined) {
+              if (vigenciainicio) {
                   updates.push('vigenciainicio = ?');
                   params.push(vigenciainicio);
               }
 
-              if (vigenciafin !== undefined) {
+              if (vigenciafin) {
                   updates.push('vigenciafin = ?');
                   params.push(vigenciafin);
               }
 
-              if (tipo !== undefined) {
+              if (tipo) {
                   updates.push('tipo = ?');
                   params.push(tipo);
               }
