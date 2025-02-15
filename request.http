@@ -1,6 +1,11 @@
 
 
-GET        http://localhost:3000/api/guardado/1
-Content-Type: application/json  
+PATCH      http://localhost:3000/api/metododepago/2
+Content-Type: application/json
+
+{
+  "tipo": "tarjeta"
+}
+
 
 
