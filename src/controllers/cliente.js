@@ -34,9 +34,7 @@ module.exports = (connection) => {
         
             try {
                
-                const { lat, lng } = ubicacion;
-        
-             
+                const { lat, lng } = ubicacion;      
                 const pointWKT = `POINT(${lng} ${lat})`;
         
                 
