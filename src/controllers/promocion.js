@@ -114,10 +114,10 @@ module.exports = (connection) => {
           const { id } = req.params;
 
           try {
-              // Marca la promoción como eliminada
+             
               const [result] = await connection.promise().query(
                   'UPDATE promocion SET eliminado = ? WHERE idpromocion = ?',
-                  [true, id]
+                  [1, id]
               );
 
               if (result.affectedRows === 0) {

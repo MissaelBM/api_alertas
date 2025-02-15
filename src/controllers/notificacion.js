@@ -2,8 +2,8 @@ module.exports = (connection) => {
   return {
       consultar: async (req, res) => {
           try {
-              // Solo selecciona notificaciones no eliminadas
-              const [rows] = await connection.promise().query('SELECT * FROM notificacion WHERE eliminado = ?', [false]);
+              
+              const [rows] = await connection.promise().query('SELECT * FROM notificacion WHERE eliminado = ?', [0]);
               res.status(200).json(rows);
           } catch (error) {
               console.error('Error:', error);
@@ -15,8 +15,8 @@ module.exports = (connection) => {
           const { id } = req.params;
 
           try {
-              // Solo selecciona la notificación si no está eliminada
-              const [rows] = await connection.promise().query('SELECT * FROM notificacion WHERE idnotificacion = ? AND eliminado = ?', [id, false]);
+              
+              const [rows] = await connection.promise().query('SELECT * FROM notificacion WHERE idnotificacion = ? AND eliminado = ?', [id, 0]);
 
               if (rows.length === 0) {
                   return res.status(404).json({ message: 'Notificación no encontrada' });
@@ -33,10 +33,10 @@ module.exports = (connection) => {
           const { cliente_idcliente, promocion_idpromocion, fechayhora, leido } = req.body;
 
           try {
-              // Inserta la notificación con `eliminado` en `false`
+              
               const [result] = await connection.promise().query(
                   'INSERT INTO notificacion (cliente_idcliente, promocion_idpromocion, fechayhora, leido, eliminado) VALUES (?, ?, ?, ?, ?)',
-                  [cliente_idcliente, promocion_idpromocion, fechayhora, leido, false]
+                  [cliente_idcliente, promocion_idpromocion, fechayhora, leido, 1]
               );
 
               res.status(201).json({ message: 'Notificación registrada', notificacionId: result.insertId });
@@ -99,10 +99,10 @@ module.exports = (connection) => {
           const { id } = req.params;
 
           try {
-              // Marca la notificación como eliminada
+            
               const [result] = await connection.promise().query(
                   'UPDATE notificacion SET eliminado = ? WHERE idnotificacion = ?',
-                  [true, id]
+                  [1, id]
               );
 
               if (result.affectedRows === 0) {

@@ -10,7 +10,7 @@ module.exports = (connection) => {
   router.get('/guardado', controller.consultar);
   router.get('/guardado/:id', controller.consultarId);
   router.patch('/guardado/:id', controller.actualizarGuardado);
- 
+  router.delete('/guardado/:id', controller.eliminarGuardado); 
 
   return router;
 };

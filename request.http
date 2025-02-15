@@ -1,10 +1,13 @@
 
 
-PATCH      http://localhost:3000/api/promocion/1
+POST       http://localhost:3000/api/notificacion
 Content-Type: application/json  
 
 {
-  "precio": 80.99
+  "cliente_idcliente": 2,
+  "promocion_idpromocion": 1,
+  "fechayhora": "2025-02-14T10:30:00",
+  "leido": 0
 }
 
 
