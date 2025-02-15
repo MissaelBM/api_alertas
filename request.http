@@ -1,13 +1,6 @@
 
 
-POST       http://localhost:3000/api/notificacion
+GET        http://localhost:3000/api/guardado/1
 Content-Type: application/json  
-
-{
-  "cliente_idcliente": 2,
-  "promocion_idpromocion": 1,
-  "fechayhora": "2025-02-14T10:30:00",
-  "leido": 0
-}
 
 
