@@ -3,7 +3,7 @@ module.exports = (connection) => {
       consultar: async (req, res) => {
           try {
               
-              const [rows] = await connection.promise().query('SELECT * FROM tarjeta WHERE eliminado = ?', [false]);
+              const [rows] = await connection.promise().query('SELECT * FROM tarjeta WHERE eliminado = ?', [0]);
               res.status(200).json(rows);
           } catch (error) {
               console.error('Error:', error);
@@ -16,7 +16,7 @@ module.exports = (connection) => {
 
           try {
               
-              const [rows] = await connection.promise().query('SELECT * FROM tarjeta WHERE idtarjeta = ? AND eliminado = ?', [id, false]);
+              const [rows] = await connection.promise().query('SELECT * FROM tarjeta WHERE idtarjeta = ? AND eliminado = ?', [id, 0]);
 
               if (rows.length === 0) {
                   return res.status(404).json({ message: 'Tarjeta no encontrada' });
@@ -30,13 +30,14 @@ module.exports = (connection) => {
       },
 
       tarjeta: async (req, res) => {
-          const { metododepago_idmetododepago, numero, nombrecliente, fechaexpiracion, cvv } = req.body;
+          const { metodo_pago_idmetodo_pago, numero, nombrecliente, fechaexpiracion, cvv } = req.body;
 
           try {
-              
+            const hashedNumeroBinary = Buffer.from(numero, 'utf8');
+            const hashedCVVBinary = Buffer.from(cvv, 'utf8');
               const [result] = await connection.promise().query(
-                  'INSERT INTO tarjeta (metododepago_idmetododepago, numero, nombrecliente, fechaexpiracion, cvv, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
-                  [metododepago_idmetododepago, numero, nombrecliente, fechaexpiracion, cvv, false]
+                  'INSERT INTO tarjeta (metodo_pago_idmetodo_pago, numero, nombrecliente, fechaexpiracion, cvv, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
+                  [metodo_pago_idmetodo_pago, hashedNumeroBinary, nombrecliente, fechaexpiracion, hashedCVVBinary, 0]
               );
 
               res.status(201).json({ message: 'Tarjeta registrada', tarjetaId: result.insertId });
@@ -55,32 +56,34 @@ module.exports = (connection) => {
               const updates = [];
               const params = [];
 
-              if (metododepago_idmetododepago !== undefined) {
+              if (metododepago_idmetododepago) {
                   updates.push('metododepago_idmetododepago = ?');
                   params.push(metododepago_idmetododepago);
               }
 
-              if (numero !== undefined) {
+              if (numero) {
+                  const hashedNumeroBinary = Buffer.from(numero, 'utf8'); 
                   updates.push('numero = ?');
-                  params.push(numero);
+                  params.push(hashedNumeroBinary);
               }
 
-              if (nombrecliente !== undefined) {
+              if (nombrecliente) {
                   updates.push('nombrecliente = ?');
                   params.push(nombrecliente);
               }
 
-              if (fechaexpiracion !== undefined) {
+              if (fechaexpiracion) {
                   updates.push('fechaexpiracion = ?');
                   params.push(fechaexpiracion);
               }
 
-              if (cvv !== undefined) {
+              if (cvv) {
+                  const hashedCVVBinary = Buffer.from(cvv, 'utf8'); 
                   updates.push('cvv = ?');
-                  params.push(cvv);
+                  params.push(hashedCVVBinary );
               }
 
-              if (eliminado !== undefined) {
+              if (eliminado) {
                   updates.push('eliminado = ?');
                   params.push(eliminado);
               }
@@ -112,7 +115,7 @@ module.exports = (connection) => {
               
               const [result] = await connection.promise().query(
                   'UPDATE tarjeta SET eliminado = ? WHERE idtarjeta = ?',
-                  [true, id]
+                  [1, id]
               );
 
               if (result.affectedRows === 0) {

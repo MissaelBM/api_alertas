@@ -1,11 +1,13 @@
 
 
-PATCH      http://localhost:3000/api/metododepago/2
+PATCH   http://localhost:3000/api/tarjeta/1
 Content-Type: application/json
 
 {
-  "tipo": "tarjeta"
+  "cvv": "156"
 }
+
+
 
 
 
