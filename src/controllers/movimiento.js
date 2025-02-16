@@ -3,7 +3,7 @@ module.exports = (connection) => {
         consultar: async (req, res) => {
             try {
                
-                const [rows] = await connection.promise().query('SELECT * FROM movimiento WHERE eliminado = ?', [false]);
+                const [rows] = await connection.promise().query('SELECT * FROM movimiento WHERE eliminado = ?', [0]);
                 res.status(200).json(rows);
             } catch (error) {
                 console.error('Error:', error);
@@ -15,8 +15,8 @@ module.exports = (connection) => {
             const { id } = req.params;
   
             try {
-                // Solo selecciona la notificación si no está eliminada
-                const [rows] = await connection.promise().query('SELECT * FROM movimiento WHERE idmovimiento = ? AND eliminado = ?', [id, false]);
+                
+                const [rows] = await connection.promise().query('SELECT * FROM movimiento WHERE idmovimiento = ? AND eliminado = ?', [id, 0]);
   
                 if (rows.length === 0) {
                     return res.status(404).json({ message: 'Movimiento no encontrada' });
@@ -30,13 +30,13 @@ module.exports = (connection) => {
         },
   
         movimiento: async (req, res) => {
-            const { cliente_idcliente, metododepago_idmetododepago, fechamovimiento, monto, iva, montototal } = req.body;
+            const { cliente_idcliente, metodo_pago_idmetodo_pago, promocion_idpromocion, fechamoviento,  montototal, iva} = req.body;
   
             try {
                 
                 const [result] = await connection.promise().query(
-                    'INSERT INTO notificacion (cliente_idcliente, metododepago_idmetododepago, fechamovimiento, monto, iva, montototal, eliminado) VALUES (?, ?, ?, ?, ?,?,?)',
-                    [cliente_idcliente, metododepago_idmetododepago, fechamovimiento, monto, iva, montototal, false]
+                    'INSERT INTO movimiento (cliente_idcliente, metodo_pago_idmetodo_pago, promocion_idpromocion, fechamoviento,  montototal,iva, eliminado) VALUES (?, ?, ?, ?, ?,?,?)',
+                    [cliente_idcliente, metodo_pago_idmetodo_pago, promocion_idpromocion, fechamoviento,  montototal, iva, 0]
                 );
   
                 res.status(201).json({ message: 'Movimiento registrado', movimientoId: result.insertId });
@@ -47,11 +47,11 @@ module.exports = (connection) => {
         },
   
         actualizarMovimiento: async (req, res) => {
-            const { idmovimiento } = req.params;
-            const { cliente_idcliente, metododepago_idmetododepago, fechamovimiento, monto, iva, montototal } = req.body;
+            const { id } = req.params;
+            const { cliente_idcliente, metodo_pago_idmetodo_pago, promocion_idpromocion, fechamoviento,  montototal, iva } = req.body;
   
             try {
-                let query = 'UPDATE notificacion SET ';
+                let query = 'UPDATE movimiento SET ';
                 const updates = [];
                 const params = [];
   
@@ -60,35 +60,35 @@ module.exports = (connection) => {
                     params.push(cliente_idcliente);
                 }
   
-                if (metododepago_idmetododepago) {
-                    updates.push('metododepago_idmetododepago = ?');
-                    params.push(metododepago_idmetododepago);
+                if (metodo_pago_idmetodo_pago) {
+                    updates.push('metodo_pago_idmetodo_pago = ?');
+                    params.push(metodo_pago_idmetodo_pago);
+                }
+                if (promocion_idpromocion) {
+                    updates.push('promocion_idpromocion = ?');
+                    params.push(promocion_idpromocion);
                 }
   
-                if (fechamovimiento) {
-                    updates.push('fechamovimiento = ?');
-                    params.push(fechamovimiento);
+                if (fechamoviento) {
+                    updates.push('fechamoviento = ?');
+                    params.push(fechamoviento);
                 }
   
-                if (monto) {
-                    updates.push('monto = ?');
-                    params.push(monto);
+                if (montototal) {
+                    updates.push('montototal = ?');
+                    params.push(montototal);
                 }
                 if (iva) {
                     updates.push('iva = ?');
                     params.push(iva);
-                }
-                if (montototal) {
-                    updates.push('montototal = ?');
-                    params.push(montototal);
                 }
   
                 if (updates.length === 0) {
                     return res.status(400).json({ message: 'Sin información' });
                 }
   
-                query += updates.join(', ') + ' WHERE idnotificacion = ?';
-                params.push(idmovimiento);
+                query += updates.join(', ') + ' WHERE idmovimiento = ?';
+                params.push(id);
   
                 const [result] = await connection.promise().query(query, params);
   
@@ -107,7 +107,7 @@ module.exports = (connection) => {
             const { id } = req.params;
   
             try {
-                // Marca la notificación como eliminada
+                
                 const [result] = await connection.promise().query(
                     'UPDATE movimiento SET eliminado = ? WHERE idmovimiento = ?',
                     [true, id]

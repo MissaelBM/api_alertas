@@ -1,10 +1,10 @@
 
 
-PATCH   http://localhost:3000/api/tarjeta/1
+PATCH      http://localhost:3000/api/movimiento/1
 Content-Type: application/json
 
 {
-  "cvv": "156"
+  "iva": 20.08
 }
 
 
