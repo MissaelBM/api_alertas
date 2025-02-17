@@ -31,7 +31,14 @@ module.exports = (connection) => {
       const { cliente_idcliente, tipo } = req.body;
 
       try {
+        const [clienteResult] = await connection.promise().query(
+          'SELECT idcliente FROM cliente WHERE idcliente = ?',
+          [clienteResult]
+        );
 
+        if (clienteResult.length === 0) {
+          return res.status(400).json({ message: 'El cliente especificado no existe' });
+        }
         const [result] = await connection.promise().query(
           'INSERT INTO metodo_pago (cliente_idcliente, tipo, eliminado) VALUES (?, ?, ?)',
           [cliente_idcliente, tipo, 0]

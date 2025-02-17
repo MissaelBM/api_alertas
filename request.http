@@ -1,12 +1,18 @@
 
 
-POST  http://localhost:3000/api/usuario/login
-Content-Type: application/json
+POST    http://localhost:3000/api/modulo 
+Content-Type: application/json  
 
-{  
-  "email": "nuevo@example.com",
-  "contraseña": "contra123"
+{
+  "permiso_idpermiso": 1,
+  "rol_idrol": 1,
+  "idcreador": null,
+  "idactualizacion": null,
+  "fechacreacion": "2025-02-13T12:00:00",
+  "fechaactualizacion": null,
+  "eliminado": 0
 }
+
 
 
 

@@ -30,6 +30,24 @@ module.exports = (connection) => {
       const { promocion_idpromocion, cliente_idcliente, fechaguardada } = req.body;
 
       try {
+        const [promocionResult] = await connection.promise().query(
+          'SELECT idpromocion FROM promocion WHERE idpromocion = ?',
+          [promocionResult]
+        );
+        if (promocionResult.length === 0) {
+          return res.status(400).json({ message: 'La promoción especificado no existe' });
+        }
+
+        const [clienteResult] = await connection.promise().query(
+          'SELECT idcliente FROM cliente WHERE idcliente = ?',
+          [clienteResult]
+        );
+
+        if (clienteResult.length === 0) {
+          return res.status(400).json({ message: 'El cliente especificado no existe' });
+        }
+
+
 
         const [result] = await connection.promise().query(
           'INSERT INTO guardado (promocion_idpromocion, cliente_idcliente, fechaguardada, eliminado) VALUES (?, ?, ?, ?)',

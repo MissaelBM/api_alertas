@@ -33,6 +33,14 @@ module.exports = (connection) => {
             const { usuario_idusuario, nombre, telefono, ubicacion } = req.body;
         
             try {
+                const [usuarioResult] = await connection.promise().query(
+                    'SELECT idusuario FROM usuario WHERE idusuario = ?',
+                    [usuarioResult]
+                );
+        
+                if (usuarioResult.length === 0) {
+                    return res.status(400).json({ message: 'El usuario especificado no existe' });
+                }
                
                 const { lat, lng } = ubicacion;      
                 const pointWKT = `POINT(${lng} ${lat})`;

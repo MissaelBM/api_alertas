@@ -2,7 +2,7 @@ module.exports = (connection) => {
   return {
     consultar: async (req, res) => {
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM categoría WHERE eliminado = ?', 0);
+        const [rows] = await connection.promise().query('SELECT * FROM categoria WHERE eliminado = ?', 0);
         res.status(200).json(rows);
       } catch (error) {
         console.error('Error:', error);
@@ -15,7 +15,7 @@ module.exports = (connection) => {
       try {
 
         const [result] = await connection.promise().query(
-          'INSERT INTO categoría (nombre, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
+          'INSERT INTO categoria (nombre, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
           [nombre, idcreador, idactualizacion, fechacreacion, fechaactualizacion, 0]
         );
 
@@ -31,7 +31,7 @@ module.exports = (connection) => {
       const { id } = req.params;
 
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM categoría WHERE idcategoría = ? AND eliminado = ?', [id, 0]);
+        const [rows] = await connection.promise().query('SELECT * FROM categoria WHERE idcategoria = ? AND eliminado = ?', [id, 0]);
 
         if (rows.length === 0) {
           return res.status(404).json({ message: 'Categoria no encontrada' });
@@ -48,7 +48,7 @@ module.exports = (connection) => {
       const { nombre, idcreador, idactualizacion, fechacreacion, fechaactualizacion } = req.body;
 
       try {
-        let query = 'UPDATE categoría SET ';
+        let query = 'UPDATE categoria SET ';
         const updates = [];
         const params = [];
 
@@ -80,7 +80,7 @@ module.exports = (connection) => {
           return res.status(400).json({ message: 'Sin información' });
         }
 
-        query += updates.join(', ') + ' WHERE idcategoría = ?';
+        query += updates.join(', ') + ' WHERE idcategoria = ?';
         params.push(id);
 
         const [result] = await connection.promise().query(query, params);
@@ -101,7 +101,7 @@ module.exports = (connection) => {
       try {
 
         const [result] = await connection.promise().query(
-          'UPDATE categoría SET eliminado = ? WHERE idcategoría = ?',
+          'UPDATE categoria SET eliminado = ? WHERE idcategoria = ?',
           [1, id]
         );
 

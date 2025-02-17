@@ -2,14 +2,12 @@
 module.exports = (connection) => {
   return {
     usuario: async (req, res) => {
-      const {rol_idrol, email, contraseña, fechacreacion, fechaactualizacion, idcreador, idactualizacion} = req.body;
+      const { rol_idrol, email, contraseña, fechacreacion, fechaactualizacion, idcreador, idactualizacion } = req.body;
 
       try {
-        
-        
+
         const hashedPasswordBinary = Buffer.from(contraseña, 'utf8');
 
-      
         const [result] = await connection.promise().query(
           'INSERT INTO usuario (rol_idrol, email, contraseña, fechacreacion, fechaactualizacion, idcreador, idactualizacion, eliminado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
           [rol_idrol, email, hashedPasswordBinary, fechacreacion, fechaactualizacion, idcreador, idactualizacion, 0]
@@ -31,7 +29,7 @@ module.exports = (connection) => {
       }
     },
 
-    
+
     consultarId: async (req, res) => {
       const { id } = req.params;
 
@@ -68,7 +66,7 @@ module.exports = (connection) => {
         }
 
         if (contraseña) {
-          const hashedPasswordBinary = Buffer.from(contraseña, 'utf8');  
+          const hashedPasswordBinary = Buffer.from(contraseña, 'utf8');
           updates.push('contraseña = ?');
           params.push(hashedPasswordBinary);
         }
@@ -76,23 +74,23 @@ module.exports = (connection) => {
         if (idcreador) {
           updates.push('idcreador = ?');
           params.push(idcreador);
-      }
+        }
 
-      if (idactualizacion) {
+        if (idactualizacion) {
           updates.push('idactualizacion = ?');
           params.push(idactualizacion);
-      }
+        }
 
-      if (fechacreacion) {
+        if (fechacreacion) {
           updates.push('fechacreacion = ?');
           params.push(fechacreacion);
-      }
+        }
 
-      
-      if (fechaactualizacion !== undefined) {
+
+        if (fechaactualizacion !== undefined) {
           updates.push('fechaactualizacion = ?');
           params.push(fechaactualizacion);
-      }
+        }
 
 
         if (updates.length === 0) {
@@ -116,39 +114,39 @@ module.exports = (connection) => {
     },
     login: async (req, res) => {
       const { email, contraseña } = req.body;
-    
+
       try {
         const [rows] = await connection.promise().query(
           'SELECT idusuario, rol_idrol, email, contraseña FROM usuario WHERE email = ? AND eliminado = 0',
           [email]
         );
-    
+
         if (rows.length === 0) {
           return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
         }
-    
+
         const user = rows[0];
-    
-        // Convertir la contraseña almacenada de BINARY a string
+
+
         const storedPassword = user.contraseña.toString('utf8').replace(/\x00/g, '');
-    
-        // 👀 Imprimir contraseñas para depuración
+
+
         console.log('Contraseña almacenada:', JSON.stringify(storedPassword));
         console.log('Contraseña ingresada:', JSON.stringify(contraseña));
-    
+
         if (contraseña.trim() !== storedPassword.trim()) {
           return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
         }
-    
-        res.json({ 
-          message: 'Login exitoso', 
+
+        res.json({
+          message: 'Login exitoso',
           user: {
             idusuario: user.idusuario,
             email: user.email,
             rol_idrol: user.rol_idrol
-          } 
+          }
         });
-    
+
       } catch (error) {
         console.error('Error al iniciar sesión:', error);
         res.status(500).json({ message: 'Error en el servidor' });
@@ -173,7 +171,7 @@ module.exports = (connection) => {
         res.status(500).json({ message: 'Error' });
       }
     }
-      
+
 
 
   };

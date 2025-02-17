@@ -2,6 +2,7 @@ module.exports = (connection) => {
   return {
       consultar: async (req, res) => {
           try {
+
               
               const [rows] = await connection.promise().query('SELECT * FROM notificacion WHERE eliminado = ?', [0]);
               res.status(200).json(rows);
@@ -33,6 +34,23 @@ module.exports = (connection) => {
           const { cliente_idcliente, promocion_idpromocion, fechayhora, leido } = req.body;
 
           try {
+            const [clienteResult] = await connection.promise().query(
+                'SELECT idcliente FROM cliente WHERE idcliente = ?',
+                [clienteResult]
+            );
+    
+            if (clienteResult.length === 0) {
+                return res.status(400).json({ message: 'El cliente especificado no existe' });
+            }
+
+            const [promocionResult] = await connection.promise().query(
+                'SELECT idpromocion FROM promocion WHERE idpromocion = ?',
+                [promocionResult]
+            );
+    
+            if (promocionResult.length === 0) {
+                return res.status(400).json({ message: 'La promoción especificado no existe' });
+            }
               
               const [result] = await connection.promise().query(
                   'INSERT INTO notificacion (cliente_idcliente, promocion_idpromocion, fechayhora, leido, eliminado) VALUES (?, ?, ?, ?, ?)',

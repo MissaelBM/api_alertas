@@ -33,9 +33,17 @@ module.exports = (connection) => {
       const { usuario_idusuario, nombre, descripcion, ubicacion } = req.body;
 
       try {
+        const [usuarioResult] = await connection.promise().query(
+          'SELECT idusuario FROM usuario WHERE idusuario = ?',
+          [usuarioResult]
+        );
+
+        if (usuarioResult.length === 0) {
+          return res.status(400).json({ message: 'El usuario especificado no existe' });
+        }
 
         const { lat, lng } = ubicacion;
-        
+
         const pointWKT = `POINT(${lng} ${lat})`;
 
         const [result] = await connection.promise().query(
@@ -52,54 +60,54 @@ module.exports = (connection) => {
     actualizarEmpresa: async (req, res) => {
       const { id } = req.params;
       const { usuario_idusuario, nombre, descripcion, ubicacion } = req.body;
-  
+
       try {
-          let query = 'UPDATE empresa SET ';
-          const updates = [];
-          const params = [];
-  
-          if (usuario_idusuario) {
-              updates.push('usuario_idusuario = ?');
-              params.push(usuario_idusuario);
-          }
-  
-          if (nombre) {
-              updates.push('nombre = ?');
-              params.push(nombre);
-          }
-  
-          if (descripcion) {
-              updates.push('descripcion = ?');
-              params.push(descripcion);
-          }
-  
-          if (ubicacion) {
-             
-              const { lat, lng } = ubicacion;
-              const pointWKT = `POINT(${lng} ${lat})`;
-              updates.push('ubicacion = ST_GeomFromText(?)');
-              params.push(pointWKT);
-          }
-  
-          if (updates.length === 0) {
-              return res.status(400).json({ message: 'Sin información' });
-          }
-  
-          query += updates.join(', ') + ' WHERE idempresa = ?';
-          params.push(id);
-  
-          const [result] = await connection.promise().query(query, params);
-  
-          if (result.affectedRows === 0) {
-              return res.status(404).json({ message: 'Empresa no encontrada' });
-          }
-  
-          res.status(200).json({ message: 'Empresa actualizada exitosamente' });
+        let query = 'UPDATE empresa SET ';
+        const updates = [];
+        const params = [];
+
+        if (usuario_idusuario) {
+          updates.push('usuario_idusuario = ?');
+          params.push(usuario_idusuario);
+        }
+
+        if (nombre) {
+          updates.push('nombre = ?');
+          params.push(nombre);
+        }
+
+        if (descripcion) {
+          updates.push('descripcion = ?');
+          params.push(descripcion);
+        }
+
+        if (ubicacion) {
+
+          const { lat, lng } = ubicacion;
+          const pointWKT = `POINT(${lng} ${lat})`;
+          updates.push('ubicacion = ST_GeomFromText(?)');
+          params.push(pointWKT);
+        }
+
+        if (updates.length === 0) {
+          return res.status(400).json({ message: 'Sin información' });
+        }
+
+        query += updates.join(', ') + ' WHERE idempresa = ?';
+        params.push(id);
+
+        const [result] = await connection.promise().query(query, params);
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Empresa no encontrada' });
+        }
+
+        res.status(200).json({ message: 'Empresa actualizada exitosamente' });
       } catch (error) {
-          console.error('Error:', error);
-          res.status(500).json({ message: 'Error al actualizar la empresa' });
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error al actualizar la empresa' });
       }
-  },
+    },
 
     eliminarEmpresa: async (req, res) => {
       const { id } = req.params;

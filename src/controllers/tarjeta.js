@@ -1,132 +1,140 @@
 module.exports = (connection) => {
-  return {
-      consultar: async (req, res) => {
-          try {
-              
-              const [rows] = await connection.promise().query('SELECT * FROM tarjeta WHERE eliminado = ?', [0]);
-              res.status(200).json(rows);
-          } catch (error) {
-              console.error('Error:', error);
-              res.status(500).json({ message: 'Error' });
-          }
-      },
+    return {
+        consultar: async (req, res) => {
+            try {
 
-      consultarId: async (req, res) => {
-          const { id } = req.params;
+                const [rows] = await connection.promise().query('SELECT * FROM tarjeta WHERE eliminado = ?', [0]);
+                res.status(200).json(rows);
+            } catch (error) {
+                console.error('Error:', error);
+                res.status(500).json({ message: 'Error' });
+            }
+        },
 
-          try {
-              
-              const [rows] = await connection.promise().query('SELECT * FROM tarjeta WHERE idtarjeta = ? AND eliminado = ?', [id, 0]);
+        consultarId: async (req, res) => {
+            const { id } = req.params;
 
-              if (rows.length === 0) {
-                  return res.status(404).json({ message: 'Tarjeta no encontrada' });
-              }
+            try {
 
-              res.status(200).json(rows[0]);
-          } catch (error) {
-              console.error('Error:', error);
-              res.status(500).json({ message: 'Error' });
-          }
-      },
+                const [rows] = await connection.promise().query('SELECT * FROM tarjeta WHERE idtarjeta = ? AND eliminado = ?', [id, 0]);
 
-      tarjeta: async (req, res) => {
-          const { metodo_pago_idmetodo_pago, numero, nombrecliente, fechaexpiracion, cvv } = req.body;
+                if (rows.length === 0) {
+                    return res.status(404).json({ message: 'Tarjeta no encontrada' });
+                }
 
-          try {
-            const hashedNumeroBinary = Buffer.from(numero, 'utf8');
-            const hashedCVVBinary = Buffer.from(cvv, 'utf8');
-              const [result] = await connection.promise().query(
-                  'INSERT INTO tarjeta (metodo_pago_idmetodo_pago, numero, nombrecliente, fechaexpiracion, cvv, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
-                  [metodo_pago_idmetodo_pago, hashedNumeroBinary, nombrecliente, fechaexpiracion, hashedCVVBinary, 0]
-              );
+                res.status(200).json(rows[0]);
+            } catch (error) {
+                console.error('Error:', error);
+                res.status(500).json({ message: 'Error' });
+            }
+        },
 
-              res.status(201).json({ message: 'Tarjeta registrada', tarjetaId: result.insertId });
-          } catch (error) {
-              console.error('Error al registrar tarjeta:', error);
-              res.status(500).json({ message: 'Error al registrar tarjeta' });
-          }
-      },
+        tarjeta: async (req, res) => {
+            const { metodo_pago_idmetodo_pago, numero, nombrecliente, fechaexpiracion, cvv } = req.body;
 
-      actualizarTarjeta: async (req, res) => {
-          const { id } = req.params;
-          const { metododepago_idmetododepago, numero, nombrecliente, fechaexpiracion, cvv, eliminado } = req.body;
+            try {
+                const [metododepagoResult] = await connection.promise().query(
+                    'SELECT idmetododepago FROM metododepago WHERE idmetododepago = ?',
+                    [metododepagoResult]
+                );
 
-          try {
-              let query = 'UPDATE tarjeta SET ';
-              const updates = [];
-              const params = [];
+                if (metododepagoResult.length === 0) {
+                    return res.status(400).json({ message: 'El método de pago especificado no existe' });
+                }
+                const hashedNumeroBinary = Buffer.from(numero, 'utf8');
+                const hashedCVVBinary = Buffer.from(cvv, 'utf8');
+                const [result] = await connection.promise().query(
+                    'INSERT INTO tarjeta (metodo_pago_idmetodo_pago, numero, nombrecliente, fechaexpiracion, cvv, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
+                    [metodo_pago_idmetodo_pago, hashedNumeroBinary, nombrecliente, fechaexpiracion, hashedCVVBinary, 0]
+                );
 
-              if (metododepago_idmetododepago) {
-                  updates.push('metododepago_idmetododepago = ?');
-                  params.push(metododepago_idmetododepago);
-              }
+                res.status(201).json({ message: 'Tarjeta registrada', tarjetaId: result.insertId });
+            } catch (error) {
+                console.error('Error al registrar tarjeta:', error);
+                res.status(500).json({ message: 'Error al registrar tarjeta' });
+            }
+        },
 
-              if (numero) {
-                  const hashedNumeroBinary = Buffer.from(numero, 'utf8'); 
-                  updates.push('numero = ?');
-                  params.push(hashedNumeroBinary);
-              }
+        actualizarTarjeta: async (req, res) => {
+            const { id } = req.params;
+            const { metododepago_idmetododepago, numero, nombrecliente, fechaexpiracion, cvv, eliminado } = req.body;
 
-              if (nombrecliente) {
-                  updates.push('nombrecliente = ?');
-                  params.push(nombrecliente);
-              }
+            try {
+                let query = 'UPDATE tarjeta SET ';
+                const updates = [];
+                const params = [];
 
-              if (fechaexpiracion) {
-                  updates.push('fechaexpiracion = ?');
-                  params.push(fechaexpiracion);
-              }
+                if (metododepago_idmetododepago) {
+                    updates.push('metododepago_idmetododepago = ?');
+                    params.push(metododepago_idmetododepago);
+                }
 
-              if (cvv) {
-                  const hashedCVVBinary = Buffer.from(cvv, 'utf8'); 
-                  updates.push('cvv = ?');
-                  params.push(hashedCVVBinary );
-              }
+                if (numero) {
+                    const hashedNumeroBinary = Buffer.from(numero, 'utf8');
+                    updates.push('numero = ?');
+                    params.push(hashedNumeroBinary);
+                }
 
-              if (eliminado) {
-                  updates.push('eliminado = ?');
-                  params.push(eliminado);
-              }
+                if (nombrecliente) {
+                    updates.push('nombrecliente = ?');
+                    params.push(nombrecliente);
+                }
 
-              if (updates.length === 0) {
-                  return res.status(400).json({ message: 'Sin información' });
-              }
+                if (fechaexpiracion) {
+                    updates.push('fechaexpiracion = ?');
+                    params.push(fechaexpiracion);
+                }
 
-              query += updates.join(', ') + ' WHERE idtarjeta = ?';
-              params.push(id);
+                if (cvv) {
+                    const hashedCVVBinary = Buffer.from(cvv, 'utf8');
+                    updates.push('cvv = ?');
+                    params.push(hashedCVVBinary);
+                }
 
-              const [result] = await connection.promise().query(query, params);
+                if (eliminado) {
+                    updates.push('eliminado = ?');
+                    params.push(eliminado);
+                }
 
-              if (result.affectedRows === 0) {
-                  return res.status(404).json({ message: 'Tarjeta no encontrada' });
-              }
+                if (updates.length === 0) {
+                    return res.status(400).json({ message: 'Sin información' });
+                }
 
-              res.status(200).json({ message: 'Tarjeta actualizada exitosamente' });
-          } catch (error) {
-              console.error('Error:', error);
-              res.status(500).json({ message: 'Error' });
-          }
-      },
+                query += updates.join(', ') + ' WHERE idtarjeta = ?';
+                params.push(id);
 
-      eliminarTarjeta: async (req, res) => {
-          const { id } = req.params;
+                const [result] = await connection.promise().query(query, params);
 
-          try {
-              
-              const [result] = await connection.promise().query(
-                  'UPDATE tarjeta SET eliminado = ? WHERE idtarjeta = ?',
-                  [1, id]
-              );
+                if (result.affectedRows === 0) {
+                    return res.status(404).json({ message: 'Tarjeta no encontrada' });
+                }
 
-              if (result.affectedRows === 0) {
-                  return res.status(404).json({ message: 'Tarjeta no encontrada' });
-              }
+                res.status(200).json({ message: 'Tarjeta actualizada exitosamente' });
+            } catch (error) {
+                console.error('Error:', error);
+                res.status(500).json({ message: 'Error' });
+            }
+        },
 
-              res.status(200).json({ message: 'Tarjeta eliminada lógicamente' });
-          } catch (error) {
-              console.error('Error:', error);
-              res.status(500).json({ message: 'Error' });
-          }
-      }
-  };
+        eliminarTarjeta: async (req, res) => {
+            const { id } = req.params;
+
+            try {
+
+                const [result] = await connection.promise().query(
+                    'UPDATE tarjeta SET eliminado = ? WHERE idtarjeta = ?',
+                    [1, id]
+                );
+
+                if (result.affectedRows === 0) {
+                    return res.status(404).json({ message: 'Tarjeta no encontrada' });
+                }
+
+                res.status(200).json({ message: 'Tarjeta eliminada lógicamente' });
+            } catch (error) {
+                console.error('Error:', error);
+                res.status(500).json({ message: 'Error' });
+            }
+        }
+    };
 };

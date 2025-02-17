@@ -12,19 +12,40 @@ module.exports = (connection) => {
 
         modulo: async (req, res) => {
             const { permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion } = req.body;
-          
+        
             try {
-              const [result] = await connection.promise().query(
-                'INSERT INTO modulo (permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion, 0]
-              );
-          
-              res.status(201).json({ message: 'Módulo registrado', moduloId: result.insertId });
+               
+                const [permisoResult] = await connection.promise().query(
+                    'SELECT idpermiso FROM permiso WHERE idpermiso = ?',
+                    [permiso_idpermiso]
+                );
+        
+                if (permisoResult.length === 0) {
+                    return res.status(400).json({ message: 'El permiso especificado no existe' });
+                }
+        
+                
+                const [rolResult] = await connection.promise().query(
+                    'SELECT idrol FROM rol WHERE idrol = ?',
+                    [rol_idrol]
+                );
+        
+                if (rolResult.length === 0) {
+                    return res.status(400).json({ message: 'El rol especificado no existe' });
+                }
+        
+                
+                const [result] = await connection.promise().query(
+                    'INSERT INTO modulo (permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    [permiso_idpermiso, rol_idrol, idcreador, idactualizacion, fechacreacion, fechaactualizacion, 0]
+                );
+        
+                res.status(201).json({ message: 'Módulo registrado', moduloId: result.insertId });
             } catch (error) {
-              console.error('Error al registrar módulo:', error);
-              res.status(500).json({ message: 'Error al registrar módulo' });
+                console.error('Error al registrar módulo:', error);
+                res.status(500).json({ message: 'Error al registrar módulo' });
             }
-          },
+        },
 
         consultarId: async (req, res) => {
             const { id } = req.params;
