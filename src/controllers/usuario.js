@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 
 module.exports = (connection) => {
   return {
@@ -117,31 +116,42 @@ module.exports = (connection) => {
     },
     login: async (req, res) => {
       const { email, contraseña } = req.body;
-
+    
       try {
-       
         const [rows] = await connection.promise().query(
-          'SELECT * FROM usuario WHERE email = ?',
+          'SELECT idusuario, rol_idrol, email, contraseña FROM usuario WHERE email = ? AND eliminado = 0',
           [email]
         );
-
+    
         if (rows.length === 0) {
-          return res.status(404).json({ message: 'Usuario no encontrado' });
+          return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
         }
-
+    
         const user = rows[0];
-
-       
-        const isPasswordValid = await bcrypt.compare(contraseña, user.contraseña);
-
-        if (!isPasswordValid) {
-          return res.status(401).json({ message: 'Contraseña inválida' });
+    
+        // Convertir la contraseña almacenada de BINARY a string
+        const storedPassword = user.contraseña.toString('utf8').replace(/\x00/g, '');
+    
+        // 👀 Imprimir contraseñas para depuración
+        console.log('Contraseña almacenada:', JSON.stringify(storedPassword));
+        console.log('Contraseña ingresada:', JSON.stringify(contraseña));
+    
+        if (contraseña.trim() !== storedPassword.trim()) {
+          return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
         }
-
-        res.status(200).json({ message: 'Inicio de sesión exitoso', userId: user.id });
+    
+        res.json({ 
+          message: 'Login exitoso', 
+          user: {
+            idusuario: user.idusuario,
+            email: user.email,
+            rol_idrol: user.rol_idrol
+          } 
+        });
+    
       } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Error' });
+        console.error('Error al iniciar sesión:', error);
+        res.status(500).json({ message: 'Error en el servidor' });
       }
     },
     eliminarUsuario: async (req, res) => {

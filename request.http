@@ -1,11 +1,14 @@
 
 
-PATCH      http://localhost:3000/api/movimiento/1
+POST  http://localhost:3000/api/usuario/login
 Content-Type: application/json
 
-{
-  "iva": 20.08
+{  
+  "email": "nuevo@example.com",
+  "contraseña": "contra123"
 }
+
+
 
 
 
