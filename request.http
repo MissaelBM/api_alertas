@@ -1,5 +1,47 @@
-
-
-GET  http://localhost:3000/api/rol
+### Obtener todos los módulos
+GET http://localhost:3000/api/modulo
 Content-Type: application/json
 
+###
+
+### Obtener un módulo por ID
+GET http://localhost:3000/api/modulo/4
+Content-Type: application/json
+
+###
+
+### Crear un nuevo módulo
+POST http://localhost:3000/api/modulo
+Content-Type: application/json
+
+{
+  "permiso_idpermiso": 1,
+  "rol_idrol": 1,
+  "idcreador": 123,
+  "idactualizacion": 456,
+  "fechacreacion": "2025-02-15T12:00:00",
+  "fechaactualizacion": "2025-02-15T13:00:00",
+  "eliminado": 0
+}
+
+###
+
+### Actualizar un módulo por ID
+PATCH http://localhost:3000/api/modulo/1
+Content-Type: application/json
+
+{
+  "permiso_idpermiso": 2,
+  "rol_idrol": 1,
+  "idcreador": 789,
+  "idactualizacion": 456,
+  "fechacreacion": "2025-02-15T12:00:00",
+  "fechaactualizacion": "2025-02-15T14:00:00",
+  "eliminado": 1
+}
+
+###
+
+### Eliminar un módulo por ID
+DELETE http://localhost:3000/api/modulo/1
+Content-Type: application/json
