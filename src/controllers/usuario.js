@@ -5,6 +5,14 @@ module.exports = (connection) => {
       const { rol_idrol, email, contraseña, fechacreacion, fechaactualizacion, idcreador, idactualizacion } = req.body;
 
       try {
+        const [rolResult] = await connection.promise().query(
+          'SELECT idrol FROM rol WHERE idrol = ?',
+          [rol_idrol]
+        );
+
+        if (rolResult.length === 0) {
+          return res.status(400).json({ message: 'El rol especificado no existe' });
+        }
 
         const hashedPasswordBinary = Buffer.from(contraseña, 'utf8');
 
