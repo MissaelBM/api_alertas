@@ -1,47 +1,42 @@
-### Obtener todos los módulos
-GET http://localhost:3000/api/modulo
+### Obtener todos los clientes
+GET http://localhost:3000/api/cliente
 Content-Type: application/json
 
 ###
 
-### Obtener un módulo por ID
-GET http://localhost:3000/api/modulo/4
+### Obtener un cliente por ID
+GET http://localhost:3000/api/cliente/1
 Content-Type: application/json
 
 ###
 
-### Crear un nuevo módulo
-POST http://localhost:3000/api/modulo
+### Crear un nuevo cliente
+POST http://localhost:3000/api/cliente
 Content-Type: application/json
 
 {
-  "permiso_idpermiso": 1,
-  "rol_idrol": 1,
-  "idcreador": 123,
-  "idactualizacion": 456,
-  "fechacreacion": "2025-02-15T12:00:00",
-  "fechaactualizacion": "2025-02-15T13:00:00",
+  "usuario_idusuario": 1,
+  "nombre": "Cliente Prueba",
+  "telefono": "123456789",
+  "ubicacion": { "x": 40.7128, "y": -74.0060 },
   "eliminado": 0
 }
 
 ###
 
-### Actualizar un módulo por ID
-PATCH http://localhost:3000/api/modulo/1
+### Actualizar un cliente por ID
+PATCH http://localhost:3000/api/cliente/1
 Content-Type: application/json
 
 {
-  "permiso_idpermiso": 2,
-  "rol_idrol": 1,
-  "idcreador": 789,
-  "idactualizacion": 456,
-  "fechacreacion": "2025-02-15T12:00:00",
-  "fechaactualizacion": "2025-02-15T14:00:00",
+  "nombre": "Cliente Actualizado",
+  "telefono": "987654321",
+  "ubicacion": { "x": 37.7749, "y": -122.4194 },
   "eliminado": 1
 }
 
 ###
 
-### Eliminar un módulo por ID
-DELETE http://localhost:3000/api/modulo/1
+### Eliminar un cliente por ID
+DELETE http://localhost:3000/api/cliente/1
 Content-Type: application/json

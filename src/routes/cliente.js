@@ -7,11 +7,11 @@ module.exports = (connection) => {
   const controller = clienteController(connection);
 
   // CRUD Routes
-  router.get('/cliente', controller.getClientes); // Obtener todos los clientes
-  router.get('/cliente/:id', controller.getClienteById); // Obtener cliente por ID
-  router.post('/cliente', controller.createCliente); // Crear un nuevo cliente
-  router.put('/cliente/:id', controller.updateCliente); // Actualizar un cliente por ID
-  router.delete('/cliente/:id', controller.deleteCliente); // Eliminar un cliente por ID
+  router.get('/cliente', controller.obtenerClientes); // Obtener todos los clientes
+  router.get('/cliente/:id', controller.obtenerClientePorId); // Obtener cliente por ID
+  router.post('/cliente', controller.crearCliente); // Crear un nuevo cliente
+  router.patch('/cliente/:id', controller.actualizarClientePorId); // Actualizar un cliente por ID
+  router.delete('/cliente/:id', controller.eliminarClientePorId); // Eliminar un cliente por ID
 
   return router;
 };

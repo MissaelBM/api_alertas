@@ -1,7 +1,7 @@
 module.exports = (connection) => {
   return {
     // Obtener todos los clientes
-    getClientes: (req, res) => {
+    obtenerClientes: (req, res) => {
       connection.query('SELECT * FROM cliente', (err, results) => {
         if (err) {
           console.error(err);
@@ -12,7 +12,7 @@ module.exports = (connection) => {
     },
 
     // Obtener cliente por ID
-    getClienteById: (req, res) => {
+    obtenerClientePorId: (req, res) => {
       const { id } = req.params;
       connection.query(
         'SELECT * FROM cliente WHERE idcliente = ?',
@@ -31,7 +31,7 @@ module.exports = (connection) => {
     },
 
     // Crear un nuevo cliente
-    createCliente: (req, res) => {
+    crearCliente: (req, res) => {
       const {
         usuario_idusuario, 
         nombre, 
@@ -52,27 +52,52 @@ module.exports = (connection) => {
     },
 
     // Actualizar un cliente por ID
-    updateCliente: (req, res) => {
+    actualizarClientePorId: async (req, res) => {
       const { id } = req.params;
-      const { nombre, telefono, ubicacion, eliminado } = req.body;
-      connection.query(
-        'UPDATE cliente SET nombre = ?, telefono = ?, ubicacion = POINT(?, ?), eliminado = ? WHERE idcliente = ?',
-        [nombre, telefono, ubicacion?.x, ubicacion?.y, eliminado, id],
-        (err, results) => {
-          if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Error al actualizar el cliente' });
-          }
-          if (results.affectedRows === 0) {
-            return res.status(404).json({ error: 'Cliente no encontrado' });
-          }
-          res.status(200).json({ message: 'Cliente actualizado con éxito' });
+      const {nombre, telefono, ubicacion, eliminado} = req.body;
+
+      try {
+        let query = 'UPDATE cliente SET ';
+        const updates = [];
+        const params = [];
+
+        if (nombre) {
+          updates.push('nombre = ?');
+          params.push(nombre);
         }
-      );
+
+        if (telefono) {
+          updates.push('telefono = ?');
+          params.push(telefono);
+        }
+
+        if (ubicacion) {
+          updates.push('ubicacion = ?');
+          params.push(ubicacion);
+        }
+
+        if (updates.length === 0) {
+          return res.status(400).json({ message: 'Sin información' });
+        }
+
+        query += updates.join(', ') + ' WHERE idcliente = ?';
+        params.push(id);
+
+        const [result] = await connection.promise().query(query, params);
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Cliente no econtrado' });
+        }
+
+        res.status(200).json({ message: 'Cliente actualizado exitosamente' });
+      } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error' });
+      }
     },
 
     // Eliminar un cliente por ID
-    deleteCliente: (req, res) => {
+    eliminarClientePorId: (req, res) => {
       const { id } = req.params;
       connection.query(
         'DELETE FROM cliente WHERE idcliente = ?',
