@@ -1,5 +1,5 @@
 ### Obtener todos los clientes
-GET http://localhost:3000/api/cliente
+GET http://localhost:3000/api/usuario
 Content-Type: application/json
 
 ###
@@ -10,6 +10,21 @@ Content-Type: application/json
 
 ###
 
+### Crear un nuevo usuario
+POST http://localhost:3000/api/usuario
+Content-Type: application/json
+
+{
+  "rol_idrol": 1,
+  "email": "hola@gmail.com",
+  "contraseña": "1234",
+  "fechacreacion": "2025-02-15T12:00:00",
+  "fechaactualización": "2025-02-15T12:00:00",
+  "idcreador": 2,
+  "idactualizacion": 2,
+  "eliminado": 0
+}
+
 ### Crear un nuevo cliente
 POST http://localhost:3000/api/cliente
 Content-Type: application/json
@@ -18,7 +33,6 @@ Content-Type: application/json
   "usuario_idusuario": 1,
   "nombre": "Cliente Prueba",
   "telefono": "123456789",
-  "ubicacion": { "x": 40.7128, "y": -74.0060 },
   "eliminado": 0
 }
 

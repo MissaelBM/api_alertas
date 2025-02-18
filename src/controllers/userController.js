@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 module.exports = (connection) => {
   return {
     usuario: async (req, res) => {
-      const { rol_idrol, email, contraseña, fechacreacion, estado} = req.body;
+      const { rol_idrol, email, contraseña, fechacreacion, eliminado} = req.body;
 
       try {
         
@@ -12,8 +12,8 @@ module.exports = (connection) => {
 
       
         const [result] = await connection.promise().query(
-          'INSERT INTO usuario (rol_idrol, email, contraseña, fechacreacion, estado) VALUES (?, ?, ?, ?, ?)',
-          [rol_idrol, email, hashedPassword, fechacreacion, estado]
+          'INSERT INTO usuario (rol_idrol, email, contraseña, fechacreacion, eliminado) VALUES (?, ?, ?, ?, ?)',
+          [rol_idrol, email, hashedPassword, fechacreacion, eliminado]
         );
 
         res.status(201).json({ message: 'Usuario registrado', userId: result.insertId });
