@@ -30,12 +30,12 @@ module.exports = (connection) => {
         },
 
         tarjeta: async (req, res) => {
-            const { metodo_pago_idmetodo_pago, numero, nombrecliente, fechaexpiracion, cvv } = req.body;
+            const { metododepago_idmetododepago, numero, nombrecliente, fechaexpiracion, cvv } = req.body;
 
             try {
                 const [metododepagoResult] = await connection.promise().query(
                     'SELECT idmetododepago FROM metododepago WHERE idmetododepago = ?',
-                    [metododepagoResult]
+                    [metododepago_idmetododepago]
                 );
 
                 if (metododepagoResult.length === 0) {
@@ -44,8 +44,8 @@ module.exports = (connection) => {
                 const hashedNumeroBinary = Buffer.from(numero, 'utf8');
                 const hashedCVVBinary = Buffer.from(cvv, 'utf8');
                 const [result] = await connection.promise().query(
-                    'INSERT INTO tarjeta (metodo_pago_idmetodo_pago, numero, nombrecliente, fechaexpiracion, cvv, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
-                    [metodo_pago_idmetodo_pago, hashedNumeroBinary, nombrecliente, fechaexpiracion, hashedCVVBinary, 0]
+                    'INSERT INTO tarjeta (metododepago_idmetododepago, numero, nombrecliente, fechaexpiracion, cvv, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
+                    [metododepago_idmetododepago, hashedNumeroBinary, nombrecliente, fechaexpiracion, hashedCVVBinary, 0]
                 );
 
                 res.status(201).json({ message: 'Tarjeta registrada', tarjetaId: result.insertId });

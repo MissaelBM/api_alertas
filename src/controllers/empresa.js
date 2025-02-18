@@ -35,7 +35,7 @@ module.exports = (connection) => {
       try {
         const [usuarioResult] = await connection.promise().query(
           'SELECT idusuario FROM usuario WHERE idusuario = ?',
-          [usuarioResult]
+          [usuario_idusuario]
         );
 
         if (usuarioResult.length === 0) {

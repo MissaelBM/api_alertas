@@ -43,10 +43,10 @@ module.exports = (connection) => {
                     [ nombre,  idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado, 0]
                 );
   
-                res.status(201).json({ message: 'Promoción registrada', promId: result.insertId });
+                res.status(201).json({ message: 'Permiso registrada', promId: result.insertId });
             } catch (error) {
-                console.error('Error al registrar promoción:', error);
-                res.status(500).json({ message: 'Error al registrar promoción' });
+                console.error('Error al registrar permiso:', error);
+                res.status(500).json({ message: 'Error al registrar permiso' });
             }
         },
   

@@ -33,7 +33,7 @@ module.exports = (connection) => {
       try {
         const [clienteResult] = await connection.promise().query(
           'SELECT idcliente FROM cliente WHERE idcliente = ?',
-          [clienteResult]
+          [cliente_idcliente]
         );
 
         if (clienteResult.length === 0) {

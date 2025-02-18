@@ -35,7 +35,7 @@ module.exports = (connection) => {
             try {
                 const [empresaResult] = await connection.promise().query(
                     'SELECT idempresa FROM empresa WHERE idempresa = ?',
-                    [empresaResult]
+                    [empresa_idempresa]
                 );
         
                 if (empresaResult.length === 0) {
@@ -44,7 +44,7 @@ module.exports = (connection) => {
 
                 const [categoriaResult] = await connection.promise().query(
                     'SELECT idcategoria FROM categoria WHERE idcategoria = ?',
-                    [categoriaResult]
+                    [categoria_idcategoria]
                 );
         
                 if (categoriaResult.length === 0) {

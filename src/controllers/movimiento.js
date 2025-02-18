@@ -35,7 +35,7 @@ module.exports = (connection) => {
             try {
                 const [clienteResult] = await connection.promise().query(
                     'SELECT idcliente FROM cliente WHERE idcliente = ?',
-                    [clienteResult]
+                    [cliente_idcliente]
                 );
 
                 if (clienteResult.length === 0) {
@@ -44,7 +44,7 @@ module.exports = (connection) => {
 
                 const [metododepagoResult] = await connection.promise().query(
                     'SELECT idmetododepago FROM metododepago WHERE idmetododepago = ?',
-                    [metododepagoResult]
+                    [metododepago_idmetododepago]
                 );
 
                 if (metododepagoResult.length === 0) {

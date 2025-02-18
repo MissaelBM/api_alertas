@@ -32,7 +32,7 @@ module.exports = (connection) => {
       try {
         const [promocionResult] = await connection.promise().query(
           'SELECT idpromocion FROM promocion WHERE idpromocion = ?',
-          [promocionResult]
+          [promocion_idpromocion]
         );
         if (promocionResult.length === 0) {
           return res.status(400).json({ message: 'La promoción especificado no existe' });
@@ -40,7 +40,7 @@ module.exports = (connection) => {
 
         const [clienteResult] = await connection.promise().query(
           'SELECT idcliente FROM cliente WHERE idcliente = ?',
-          [clienteResult]
+          [cliente_idcliente]
         );
 
         if (clienteResult.length === 0) {

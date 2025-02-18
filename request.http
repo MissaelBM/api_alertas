@@ -1,17 +1,21 @@
 
 
-POST    http://localhost:3000/api/modulo 
+POST  http://localhost:3000/api/empresa
 Content-Type: application/json  
 
 {
-  "permiso_idpermiso": 1,
-  "rol_idrol": 1,
-  "idcreador": null,
-  "idactualizacion": null,
-  "fechacreacion": "2025-02-13T12:00:00",
-  "fechaactualizacion": null,
-  "eliminado": 0
+  "usuario_idusuario": 2,
+  "nombre": "Primavera",
+  "descripcion": "Florería",
+  "ubicacion": { "lat": 37.7749, "lng": -122.4194 }
 }
+
+
+
+
+
+
+
 
 
 
