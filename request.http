@@ -1,5 +1,5 @@
 ### Obtener todos los clientes
-GET http://localhost:3000/api/usuario
+GET http://localhost:3000/api/cliente
 Content-Type: application/json
 
 ###
@@ -33,24 +33,27 @@ Content-Type: application/json
   "usuario_idusuario": 1,
   "nombre": "Cliente Prueba",
   "telefono": "123456789",
+  "ubicacion": { "x": 40.7128, "y": -74.0060 },
   "eliminado": 0
 }
+
 
 ###
 
 ### Actualizar un cliente por ID
-PATCH http://localhost:3000/api/cliente/1
+PATCH http://localhost:3000/api/cliente/13
 Content-Type: application/json
 
 {
+  "usuario_idusuario": 1,
   "nombre": "Cliente Actualizado",
   "telefono": "987654321",
-  "ubicacion": { "x": 37.7749, "y": -122.4194 },
+  "ubicacion": { "x": 40.7128, "y": -74.0060 },
   "eliminado": 1
 }
 
 ###
 
 ### Eliminar un cliente por ID
-DELETE http://localhost:3000/api/cliente/1
+DELETE http://localhost:3000/api/cliente/6
 Content-Type: application/json
