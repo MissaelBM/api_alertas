@@ -83,7 +83,7 @@ module.exports = (connection) => {
                 const updates = [];
                 const params = [];
         
-                // Verifica y agrega campos para actualizar
+                
                 if (permiso_idpermiso !== undefined) {
                     updates.push('permiso_idpermiso = ?');
                     params.push(permiso_idpermiso);
@@ -114,24 +114,24 @@ module.exports = (connection) => {
                     params.push(fechaactualizacion);
                 }
         
-                // Si no hay campos para actualizar
+                
                 if (updates.length === 0) {
                     return res.status(400).json({ message: 'Sin información' });
                 }
         
-                // Completa la consulta SQL
+            
                 query += updates.join(', ') + ' WHERE idmodulo = ?';
                 params.push(id);
         
-                // Ejecuta la consulta
+                
                 const [result] = await connection.promise().query(query, params);
         
-                // Verifica si se actualizó algún registro
+                
                 if (result.affectedRows === 0) {
                     return res.status(404).json({ message: 'Modulo no encontrado' });
                 }
         
-                // Respuesta exitosa
+               
                 res.status(200).json({ message: 'Modulo actualizado exitosamente' });
             } catch (error) {
                 console.error('Error:', error);

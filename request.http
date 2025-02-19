@@ -1,14 +1,14 @@
 
 
-POST  http://localhost:3000/api/empresa
+GET   http://localhost:3000/api/listadecategoria
 Content-Type: application/json  
 
 {
-  "usuario_idusuario": 2,
-  "nombre": "Primavera",
-  "descripcion": "Florería",
-  "ubicacion": { "lat": 37.7749, "lng": -122.4194 }
+  "cliente_idcliente": 1,
+  "categoria_idcategoria": 1
 }
+
+
 
 
 
