@@ -1,4 +1,6 @@
-
+const authenticateToken = require('../middleware/auth');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 module.exports = (connection) => {
   return {
     usuario: async (req, res) => {
@@ -145,9 +147,23 @@ module.exports = (connection) => {
         if (contraseña.trim() !== storedPassword.trim()) {
           return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
         }
+ 
+        const accessToken = jwt.sign(
+          { idusuario: user.idusuario, email: user.email, rol_idrol: user.rol_idrol },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: '15m' } // El token expira en 15 minutos
+        );
+    
+        const refreshToken = jwt.sign(
+          { idusuario: user.idusuario, email: user.email, rol_idrol: user.rol_idrol },
+          process.env.REFRESH_TOKEN_SECRET,
+          { expiresIn: '7d' } // El refresh token expira en 7 días
+        );
 
         res.json({
           message: 'Login exitoso',
+          accessToken,
+          refreshToken,
           user: {
             idusuario: user.idusuario,
             email: user.email,

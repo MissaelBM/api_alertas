@@ -1,26 +1,78 @@
 
-
-GET   http://localhost:3000/api/listadecategoria
+POST http://localhost:3000/api/permiso  
 Content-Type: application/json  
 
 {
-  "cliente_idcliente": 1,
-  "categoria_idcategoria": 1
+   "nombre": "Crear",
+  "idcreador": 1,
+  "idactualizacion": null,
+  "fechacreacion": "2025-02-13T12:00:00",
+  "fechaactualizacion": null
+}
+
+###
+GET http://localhost:3000/api/permiso  
+
+###
+POST http://localhost:3000/api/rol  
+Content-Type: application/json 
+
+{
+  "nombre": "Administrador",
+  "idcreador": 1,
+  "idactualizacion": null,
+  "fechacreacion": "2025-02-13T12:00:00",
+  "fechaactualizacion": null,
+  "eliminado": 0
+}
+
+###
+POST    http://localhost:3000/api/modulo 
+Content-Type: application/json  
+
+{
+  "permiso_idpermiso": 1,
+  "rol_idrol": 1,
+  "idcreador": null,
+  "idactualizacion": null,
+  "fechacreacion": "2025-02-13T12:00:00",
+  "fechaactualizacion": null,
+  "eliminado": 0
+}
+###
+GET http://localhost:3000/api/modulo 
+Content-Type: application/json  
+
+###
+POST http://localhost:3000/api/usuario
+Content-Type: application/json
+
+{
+  "rol_idrol": 1,
+  "email": "usuario1@ejemplo.com",
+  "contraseña": "password123",
+  "fechacreacion": "2023-10-01",
+  "fechaactualizacion": "2023-10-01",
+  "idcreador": 1,
+  "idactualizacion": 1
+}
+
+###
+POST http://localhost:3000/api/usuario/login
+Content-Type: application/json
+
+{
+  "email": "usuario1@ejemplo.com",
+  "contraseña": "password123"
 }
 
 
+###
+GET http://localhost:3000/api/usuario
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDAyNTc1MSwiZXhwIjoxNzQwMDI2NjUxfQ.sF2Q_lmjZ9XWW1QYacMwyTYh40G9XJ3QIaG6y3zN9E4
+Content-Type: application/json
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+###
+GET http://localhost:3000/api/usuario/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDAyMzMxNSwiZXhwIjoxNzQwMDI0MjE1fQ.StkriKB9xjZDuHdh4CVIx6tcWkSa5IbTaRu-b1T8Pu4
+Content-Type: application/json

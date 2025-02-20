@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
+const authenticateToken = require('./src/middleware/auth');
 const userRoutes = require('./src/routes/usuario');
 const rolRoutes = require('./src/routes/rol');
 const empresaRoutes = require('./src/routes/empresa');
