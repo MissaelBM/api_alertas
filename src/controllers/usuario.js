@@ -147,17 +147,25 @@ module.exports = (connection) => {
         if (contraseña.trim() !== storedPassword.trim()) {
           return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
         }
- 
+
         const accessToken = jwt.sign(
           { idusuario: user.idusuario, email: user.email, rol_idrol: user.rol_idrol },
           process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: '15m' } // El token expira en 15 minutos
+          { expiresIn: '15m' }
         );
-    
+
         const refreshToken = jwt.sign(
           { idusuario: user.idusuario, email: user.email, rol_idrol: user.rol_idrol },
           process.env.REFRESH_TOKEN_SECRET,
-          { expiresIn: '7d' } // El refresh token expira en 7 días
+          { expiresIn: '7d' }
+        );
+
+        const fechaexpiracion = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); 
+
+        const fechacreacion =new Date(Date.now());
+        await connection.promise().query(
+          'INSERT INTO refreshtoken (usuario_idusuario, token, fechaexpiracion, fechacreacion) VALUES (?, ?, ?, ?)',
+          [user.idusuario, refreshToken, fechaexpiracion, fechacreacion]
         );
 
         res.json({
@@ -193,6 +201,68 @@ module.exports = (connection) => {
       } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error' });
+      }
+    },
+    refreshToken: async (req, res) => {
+      const { refreshToken } = req.body;
+
+      if (!refreshToken) {
+        return res.status(401).json({ message: 'Refresh token no proporcionado' });
+      }
+
+      try {
+        
+    const [rows] = await connection.promise().query(
+      'SELECT * FROM refreshtoken WHERE token = ? AND fechaexpiracion > NOW()',
+      [refreshToken]
+    );
+
+    if (rows.length === 0) {
+      return res.status(403).json({ message: 'Refresh token inválido o expirado' });
+    }
+        
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+          if (err) {
+            return res.status(403).json({ message: 'Refresh token inválido o expirado' });
+          }
+
+          
+          const accessToken = jwt.sign(
+            { idusuario: user.idusuario, email: user.email, rol_idrol: user.rol_idrol },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '15m' } 
+          );
+
+         
+          res.json({ accessToken });
+        });
+      } catch (error) {
+        console.error('Error al refrescar el token:', error);
+        res.status(500).json({ message: 'Error en el servidor' });
+      }
+    },
+    logout: async (req, res) => {
+      const { refreshToken } = req.body;
+    
+      if (!refreshToken) {
+        return res.status(400).json({ message: 'Refresh token no proporcionado' });
+      }
+    
+      try {
+        
+        const [result] = await connection.promise().query(
+          'UPDATE refreshtoken SET eliminado = 1 WHERE token = ?',
+          [refreshToken]
+        );
+    
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Refresh token no encontrado' });
+        }
+        res.status(200).json({ message: 'Refresh token eliminada lógicamente' });
+        res.json({ message: 'Sesión cerrada exitosamente' });
+      } catch (error) {
+        console.error('Error al cerrar sesión:', error);
+        res.status(500).json({ message: 'Error en el servidor' });
       }
     }
 

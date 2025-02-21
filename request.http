@@ -68,11 +68,107 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/api/usuario
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDAyNTc1MSwiZXhwIjoxNzQwMDI2NjUxfQ.sF2Q_lmjZ9XWW1QYacMwyTYh40G9XJ3QIaG6y3zN9E4
+GET http://localhost:3000/api/usuario/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMDUyMSwiZXhwIjoxNzQwNzA1MzIxfQ.px-9MMSmFYzMjw-1BaTCvg99z1ydm8T--N-kqyGEnf4
 Content-Type: application/json
 
 ###
-GET http://localhost:3000/api/usuario/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDAyMzMxNSwiZXhwIjoxNzQwMDI0MjE1fQ.StkriKB9xjZDuHdh4CVIx6tcWkSa5IbTaRu-b1T8Pu4
+GET http://localhost:3000/api/usuario
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwMTAyMjEzfQ.SKLZ0b3YxlAGcrPUH5if81SC3L2IPIhwRmF6y5rq6Eg
 Content-Type: application/json
+
+### 3. Renovar el access token (Ruta pública)
+POST http://localhost:3000/api/usuario/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwNzA2MTEzfQ._HNImbZTF9JunvZraJ87vhhYKZ3-eQOzzIkx4rDNdUc"
+}
+
+
+###
+POST   http://localhost:3000/api/cliente
+Content-Type: application/json  
+
+{
+  "usuario_idusuario": 1,
+  "nombre": "Juan Pérez",
+  "telefono": "133456789",
+  "ubicacion": { "lat": 40.7128, "lng": -74.0060 }
+  
+}
+
+###
+GET http://localhost:3000/api/cliente/1
+Content-Type: application/json  
+
+
+###
+PATCH    http://localhost:3000/api/cliente/1
+Content-Type: application/json
+
+{
+   "nombre": "Carlos Pérez" 
+}
+
+###
+PATCH   http://localhost:3000/api/empresa/1
+Content-Type: application/json
+
+{
+  "nombre": "La Magnolia"
+}
+
+###
+POST  http://localhost:3000/api/empresa
+Content-Type: application/json
+{
+  "usuario_idusuario": 1,
+  "nombre": "Tech Solutions",
+  "descripcion": "Empresa de desarrollo de software",
+  "ubicacion": { "lat": 37.7749, "lng": -122.4194 }
+}
+
+###
+PATCH  http://localhost:3000/api/categoria/1
+Content-Type: application/json
+
+{
+  "fechaactualizacion": "2025-02-16T12:00:00"
+}
+
+###
+GET   http://localhost:3000/api/listadecategoria/1
+Content-Type: application/json
+
+###
+POST http://localhost:3000/api/usuario/login
+Content-Type: application/json
+
+{
+  "email": "usuario1@ejemplo.com",
+  "contraseña": "password123"
+}
+
+###
+POST http://localhost:3000/api/usuario/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDAzOTQxNSwiZXhwIjoxNzQwNjQ0MjE1fQ.zXseqevPHZiiLYe_GGYhsGEnnwnvWb3FDtbvju6tQS0"
+}
+
+### 
+POST http://localhost:3000/api/usuario/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwNzA2MTEzfQ._HNImbZTF9JunvZraJ87vhhYKZ3-eQOzzIkx4rDNdUc"
+}
+
+### 
+POST http://localhost:3000/api/usuario/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwNzA2MTEzfQ._HNImbZTF9JunvZraJ87vhhYKZ3-eQOzzIkx4rDNdUc"
+}

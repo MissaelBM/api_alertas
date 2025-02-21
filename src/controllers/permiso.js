@@ -13,7 +13,7 @@ module.exports = (connection) => {
 
         consultarId: async (req, res) => {
             const { idpermiso } = req.params;
-            const id = parseInt(idpermiso, 10); // Convertir a número entero
+            const id = parseInt(idpermiso, 10); 
 
             if (isNaN(id)) {
                 return res.status(400).json({ message: 'ID no válido' });

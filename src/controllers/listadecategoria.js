@@ -11,10 +11,10 @@ module.exports = (connection) => {
 
     },
     consultarId: async (req, res) => {
-      const { idlistadecategoria } = req.params;
+      const { id } = req.params;
 
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM listadecategorias WHERE idlistadecategoria = ? AND eliminado = ?', [idlistadecategoria, 0]);
+        const [rows] = await connection.promise().query('SELECT * FROM listadecategorias WHERE idlistadecategoria = ? AND eliminado = ?', [id, 0]);
 
         if (rows.length === 0) {
           return res.status(404).json({ message: 'Lista de categoria no encontrada' });
