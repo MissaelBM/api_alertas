@@ -18,9 +18,9 @@ POST http://localhost:3000/api/rol
 Content-Type: application/json 
 
 {
-  "nombre": "Administrador",
+  "nombre": "Cliente",
   "idcreador": 1,
-  "idactualizacion": null,
+  "idactualizacion": 1,
   "fechacreacion": "2025-02-13T12:00:00",
   "fechaactualizacion": null,
   "eliminado": 0
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 {
   "permiso_idpermiso": 1,
-  "rol_idrol": 1,
+  "rol_idrol": 2,
   "idcreador": null,
   "idactualizacion": null,
   "fechacreacion": "2025-02-13T12:00:00",
@@ -48,11 +48,11 @@ POST http://localhost:3000/api/usuario
 Content-Type: application/json
 
 {
-  "rol_idrol": 1,
-  "email": "usuario1@ejemplo.com",
+  "rol_idrol": 2,
+  "email": "cliente1@ejemplo.com",
   "contraseña": "password123",
-  "fechacreacion": "2023-10-01",
-  "fechaactualizacion": "2023-10-01",
+  "fechacreacion": "2024-10-01",
+  "fechaactualizacion": "2024-10-01",
   "idcreador": 1,
   "idactualizacion": 1
 }
@@ -62,7 +62,7 @@ POST http://localhost:3000/api/usuario/login
 Content-Type: application/json
 
 {
-  "email": "usuario1@ejemplo.com",
+  "email": "cliente1@ejemplo.com",
   "contraseña": "password123"
 }
 
@@ -172,3 +172,7 @@ Content-Type: application/json
 {
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwNzA2MTEzfQ._HNImbZTF9JunvZraJ87vhhYKZ3-eQOzzIkx4rDNdUc"
 }
+
+### 
+GET http://localhost:3000/api/usuario
+Content-Type: application/json
