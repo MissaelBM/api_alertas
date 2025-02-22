@@ -99,17 +99,17 @@ module.exports = (connection) => {
                     params.push(idcreador);
                 }
         
-                if (idactualizacion !== undefined) {
+                if (idactualizacion) {
                     updates.push('idactualizacion = ?');
                     params.push(idactualizacion);
                 }
         
-                if (fechacreacion !== undefined) {
+                if (fechacreacion ) {
                     updates.push('fechacreacion = ?');
                     params.push(fechacreacion);
                 }
         
-                if (fechaactualizacion !== undefined) {
+                if (fechaactualizacion) {
                     updates.push('fechaactualizacion = ?');
                     params.push(fechaactualizacion);
                 }

@@ -34,7 +34,7 @@ module.exports = (connection) => {
         },
 
         permiso: async (req, res) => {
-            const { nombre, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado } = req.body;
+            const { nombre, idcreador, idactualizacion, fechacreacion, fechaactualizacion } = req.body;
 
             try {
                 const valoresPermitidos = ['Crear', 'Consultar', 'Actualizar', 'Eliminar'];
