@@ -1,17 +1,16 @@
 const express = require('express');
 const clienteController = require('../controllers/cliente');
-
+const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (connection) => {
   const controller = clienteController(connection);
 
-  // CRUD Routes
-  router.get('/cliente', controller.obtenerClientes); // Obtener todos los clientes
-  router.get('/cliente/:id', controller.obtenerClientePorId); // Obtener cliente por ID
-  router.post('/cliente', controller.crearCliente); // Crear un nuevo cliente
-  router.patch('/cliente/:id', controller.actualizarClientePorId); // Actualizar un cliente por ID
-  router.delete('/cliente/:id', controller.eliminarClientePorId); // Eliminar un cliente por ID
+  router.post('/cliente', controller.cliente);
+  router.get('/cliente', authenticateToken(['Administrador']), controller.consultar);
+  router.get('/cliente/:id', controller.consultarId);
+  router.patch('/cliente/:id', controller.actualizarCliente);
+  router.delete('/cliente/:id',authenticateToken(['Administrador']), controller.eliminarCliente);
 
   return router;
 };

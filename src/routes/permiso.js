@@ -1,21 +1,16 @@
 const express = require('express');
 const permisoController = require('../controllers/permiso');
-
+const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (connection) => {
   const controller = permisoController(connection);
 
-      //btener todos los permisos
-      router.get('/permiso', controller.obtenerPermisos);
-      //obtener un permiso por ID
-      router.get('/permiso/:id', controller.obtenerPermisoPorId);
-      //crear un nuevo permiso
-      router.post('/permiso', controller.crearPermiso);
-      //actualizar un permiso por ID
-      router.patch('/permiso/:id', controller.actualizarPermiso);
-      //eliminar un permiso por ID (soft delete)
-      router.delete('/permiso/:id', controller.eliminarPermiso);
+  router.post('/permiso', controller.permiso);
+  router.get('/permiso',authenticateToken(['Administrador']), controller.consultar);
+  router.get('/permiso/:idpermiso', controller.consultarId);
+  router.patch('/permiso/:idpermiso', controller.actualizarPermiso);
+  router.delete('/permiso/:idpermiso',authenticateToken(['Administrador']), controller.eliminarPermiso);
 
   return router;
 };
