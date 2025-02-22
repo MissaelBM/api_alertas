@@ -66,7 +66,7 @@ module.exports = (connection) => {
 
         actualizarPromocion: async (req, res) => {
             const { id } = req.params;
-            const { empresa_idempresa, nombre, descripcion, precio, vigenciainicio, vigenciafin, tipo } = req.body;
+            const { empresa_idempresa, categoria_idcategoria, nombre, descripcion, precio, vigenciainicio, vigenciafin, tipo } = req.body;
 
             try {
                 let query = 'UPDATE promocion SET ';

@@ -164,8 +164,8 @@ module.exports = (connection) => {
 
         const fechacreacion =new Date(Date.now());
         await connection.promise().query(
-          'INSERT INTO refreshtoken (usuario_idusuario, token, fechaexpiracion, fechacreacion) VALUES (?, ?, ?, ?)',
-          [user.idusuario, refreshToken, fechaexpiracion, fechacreacion]
+          'INSERT INTO refreshtoken (usuario_idusuario, token, fechaexpiracion, fechacreacion, eliminado) VALUES (?, ?, ?, ?, ?)',
+          [user.idusuario, refreshToken, fechaexpiracion, fechacreacion, 0]
         );
 
         res.json({
@@ -206,35 +206,32 @@ module.exports = (connection) => {
     },
     refreshToken: async (req, res) => {
       const { refreshToken } = req.body;
-
+    
       if (!refreshToken) {
         return res.status(401).json({ message: 'Refresh token no proporcionado' });
       }
-
+    
       try {
-        
-    const [rows] = await connection.promise().query(
-      'SELECT * FROM refreshtoken WHERE token = ? AND fechaexpiracion > NOW()',
-      [refreshToken]
-    );
-
-    if (rows.length === 0) {
-      return res.status(403).json({ message: 'Refresh token inválido o expirado' });
-    }
-        
+        const [rows] = await connection.promise().query(
+          'SELECT * FROM refreshtoken WHERE token = ? AND fechaexpiracion > NOW() AND eliminado = 0',
+          [refreshToken]
+        );
+    
+        if (rows.length === 0) {
+          return res.status(403).json({ message: 'Refresh token inválido, expirado o eliminado' });
+        }
+    
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
           if (err) {
             return res.status(403).json({ message: 'Refresh token inválido o expirado' });
           }
-
-          
+    
           const accessToken = jwt.sign(
-            { idusuario: user.idusuario, email: user.email, rol_idrol: user.rol_idrol },
+            { idusuario: user.idusuario, email: user.email, rol_idrol: user.rol_idrol, nombre:user.nombre },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '15m' } 
+            { expiresIn: '15m' }
           );
-
-         
+    
           res.json({ accessToken });
         });
       } catch (error) {
@@ -250,7 +247,6 @@ module.exports = (connection) => {
       }
     
       try {
-        
         const [result] = await connection.promise().query(
           'UPDATE refreshtoken SET eliminado = 1 WHERE token = ?',
           [refreshToken]
@@ -259,7 +255,7 @@ module.exports = (connection) => {
         if (result.affectedRows === 0) {
           return res.status(404).json({ message: 'Refresh token no encontrado' });
         }
-        res.status(200).json({ message: 'Refresh token eliminada lógicamente' });
+    
         res.json({ message: 'Sesión cerrada exitosamente' });
       } catch (error) {
         console.error('Error al cerrar sesión:', error);

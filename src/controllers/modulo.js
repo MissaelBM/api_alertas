@@ -140,16 +140,16 @@ module.exports = (connection) => {
         },
 
         eliminarModulo: async (req, res) => {
-            const { idpermiso } = req.params;
+            const { id } = req.params;
 
             try {
                 const [result] = await connection.promise().query(
                     'UPDATE permiso SET eliminado = ? WHERE idpermiso = ?',
-                    [true, idpermiso]
+                    [true, id]
                 );
 
                 if (result.affectedRows === 0) {
-                    return res.status(404).json({ message: 'Permiso no encontrado' });
+                    return res.status(404).json({ message: 'Modulo no encontrado' });
                 }
 
                 res.status(200).json({ message: 'Permiso eliminado' });

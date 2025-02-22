@@ -1,6 +1,6 @@
 const express = require('express');
 const empresaController = require('../controllers/empresa');
-
+const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (connection) => {

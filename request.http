@@ -1,38 +1,39 @@
-
-POST http://localhost:3000/api/permiso  
+DELETE    http://localhost:3000/api/permiso/2  
 Content-Type: application/json  
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTYzMzYsImV4cCI6MTc0MDI1NzIzNn0.UswJttRK1c8ACTP2DHc2TzzMknWbJAVSwqZ-gXk9C1Q
 
 {
-   "nombre": "Crear",
-  "idcreador": 1,
-  "idactualizacion": null,
-  "fechacreacion": "2025-02-13T12:00:00",
-  "fechaactualizacion": null
+
+  "fechacreacion": "2025-02-15T12:00:00"
 }
 
 ###
 GET http://localhost:3000/api/permiso  
 
 ###
-POST http://localhost:3000/api/rol  
+DELETE   http://localhost:3000/api/rol/2  
 Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTYzMzYsImV4cCI6MTc0MDI1NzIzNn0.UswJttRK1c8ACTP2DHc2TzzMknWbJAVSwqZ-gXk9C1Q
+
 
 {
   "nombre": "Cliente",
   "idcreador": 1,
-  "idactualizacion": 1,
-  "fechacreacion": "2025-02-13T12:00:00",
+  "idactualizacion": null,
+  "fechacreacion": "2025-02-15T12:00:00",
   "fechaactualizacion": null,
   "eliminado": 0
 }
 
 ###
-POST    http://localhost:3000/api/modulo 
+DELETE   http://localhost:3000/api/modulo/2 
 Content-Type: application/json  
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTYzMzYsImV4cCI6MTc0MDI1NzIzNn0.UswJttRK1c8ACTP2DHc2TzzMknWbJAVSwqZ-gXk9C1Q
+
 
 {
-  "permiso_idpermiso": 1,
-  "rol_idrol": 2,
+  "permiso_idpermiso": 2,
+  "rol_idrol": 1,
   "idcreador": null,
   "idactualizacion": null,
   "fechacreacion": "2025-02-13T12:00:00",
@@ -44,12 +45,14 @@ GET http://localhost:3000/api/modulo
 Content-Type: application/json  
 
 ###
-POST http://localhost:3000/api/usuario
+DELETE  http://localhost:3000/api/usuario/2
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTYzMzYsImV4cCI6MTc0MDI1NzIzNn0.UswJttRK1c8ACTP2DHc2TzzMknWbJAVSwqZ-gXk9C1Q
+
 
 {
-  "rol_idrol": 2,
-  "email": "cliente1@ejemplo.com",
+  "rol_idrol": 1,
+  "email": "cliente@ejemplo.com",
   "contraseña": "password123",
   "fechacreacion": "2024-10-01",
   "fechaactualizacion": "2024-10-01",
@@ -62,7 +65,7 @@ POST http://localhost:3000/api/usuario/login
 Content-Type: application/json
 
 {
-  "email": "cliente1@ejemplo.com",
+  "email": "admin@ejemplo.com",
   "contraseña": "password123"
 }
 
@@ -71,65 +74,84 @@ Content-Type: application/json
 GET http://localhost:3000/api/usuario/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMDUyMSwiZXhwIjoxNzQwNzA1MzIxfQ.px-9MMSmFYzMjw-1BaTCvg99z1ydm8T--N-kqyGEnf4
 Content-Type: application/json
 
-###
-GET http://localhost:3000/api/usuario
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwMTAyMjEzfQ.SKLZ0b3YxlAGcrPUH5if81SC3L2IPIhwRmF6y5rq6Eg
-Content-Type: application/json
-
-### 3. Renovar el access token (Ruta pública)
+### 2. Obtener lista de usuarios (Ruta protegida)
+GET http://localhost:3000/api/permiso
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjIsImVtYWlsIjoiY2xpZW50ZUBlamVtcGxvLmNvbSIsInJvbF9pZHJvbCI6MSwibm9tYnJlIjoiQWRtaW5pc3RyYWRvciIsImlhdCI6MTc0MDI0ODk1MiwiZXhwIjoxNzQwMjQ5ODUyfQ.MQbN7_h-k2K_hhBDqF-xn_gKRGu2TpQFxl-EbsA1oR0
+### 3. Renovar el access token (Ruta pública)oiQWRtaW5pc3RyYWRvciIsImlhdC
 POST http://localhost:3000/api/usuario/refresh-token
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwNzA2MTEzfQ._HNImbZTF9JunvZraJ87vhhYKZ3-eQOzzIkx4rDNdUc"
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjIsImVtYWlsIjoiY2xpZW50ZUBlamVtcGxvLmNvbSIsInJvbF9pZHJvbCI6MSwibm9tYnJlIjoiQWRtaW5pc3RyYWRvciIsImlhdCI6MTc0MDI0ODk1MiwiZXhwIjoxNzQwODUzNzUyfQ.0en8TzC7_kxDeIJxhq1S8Y3RWxp-lC--zg3XKAeyRZc"
 }
 
 
-###
-POST   http://localhost:3000/api/cliente
-Content-Type: application/json  
+### 4. Cerrar sesión (Ruta pública)
+POST http://localhost:3000/api/usuario/logout
+Content-Type: application/json
 
 {
-  "usuario_idusuario": 1,
-  "nombre": "Juan Pérez",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTYzMzYsImV4cCI6MTc0MDg2MTEzNn0.JkpXX_sjBuF3DLYFGti9iarBeFRloPXyTg6cjTZ2Ok8"
+
+}
+
+
+### 5. Intentar renovar el access token después de cerrar sesión (Ruta pública)
+POST http://localhost:3000/api/usuario/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjIsImVtYWlsIjoiY2xpZW50ZUBlamVtcGxvLmNvbSIsInJvbF9pZHJvbCI6MSwibm9tYnJlIjoiQWRtaW5pc3RyYWRvciIsImlhdCI6MTc0MDI0ODk1MiwiZXhwIjoxNzQwODUzNzUyfQ.0en8TzC7_kxDeIJxhq1S8Y3RWxp-lC--zg3XKAeyRZc"
+
+}
+###
+DELETE     http://localhost:3000/api/cliente/2
+Content-Type: application/json  
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTYzMzYsImV4cCI6MTc0MDI1NzIzNn0.UswJttRK1c8ACTP2DHc2TzzMknWbJAVSwqZ-gXk9C1Q
+
+{
+  "usuario_idusuario": 2,
+  "nombre": "Alfredo Pérez",
   "telefono": "133456789",
   "ubicacion": { "lat": 40.7128, "lng": -74.0060 }
   
 }
 
 ###
-GET http://localhost:3000/api/cliente/1
+DELETE  http://localhost:3000/api/cliente/2
 Content-Type: application/json  
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTQ2MDksImV4cCI6MTc0MDI1NTUwOX0.MVg3XCPjhqyknin9aczxfKW17DHS5wRjoOs3FX58r6Q
 
 ###
 PATCH    http://localhost:3000/api/cliente/1
 Content-Type: application/json
 
 {
-   "nombre": "Carlos Pérez" 
+   "nombre": "Luis Pérez" 
 }
 
 ###
-PATCH   http://localhost:3000/api/empresa/1
+DELETE    http://localhost:3000/api/empresa/2
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTYzMzYsImV4cCI6MTc0MDI1NzIzNn0.UswJttRK1c8ACTP2DHc2TzzMknWbJAVSwqZ-gXk9C1Q
 
 {
-  "nombre": "La Magnolia"
+  "nombre": "NT"
 }
 
 ###
 POST  http://localhost:3000/api/empresa
 Content-Type: application/json
+
 {
-  "usuario_idusuario": 1,
-  "nombre": "Tech Solutions",
+  "usuario_idusuario": 3,
+  "nombre": "Nova Tech",
   "descripcion": "Empresa de desarrollo de software",
   "ubicacion": { "lat": 37.7749, "lng": -122.4194 }
 }
 
 ###
-PATCH  http://localhost:3000/api/categoria/1
+DELETE   http://localhost:3000/api/categoria/2
 Content-Type: application/json
 
 {
@@ -150,29 +172,76 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/usuario/refresh-token
+POST http://localhost:3000/api/categoria
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDAzOTQxNSwiZXhwIjoxNzQwNjQ0MjE1fQ.zXseqevPHZiiLYe_GGYhsGEnnwnvWb3FDtbvju6tQS0"
+  "nombre": "Deportes",
+  "idcreador": 1,
+  "idactualizacion": null,
+  "fechacreacion": "2025-02-13T12:00:00",
+  "fechaactualizacion": null
 }
 
-### 
-POST http://localhost:3000/api/usuario/logout
+###
+DELETE   http://localhost:3000/api/promocion/1
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwNzA2MTEzfQ._HNImbZTF9JunvZraJ87vhhYKZ3-eQOzzIkx4rDNdUc"
+  
+  "precio": 59.99
+ 
 }
 
-### 
-POST http://localhost:3000/api/usuario/refresh-token
+###
+DELETE   http://localhost:3000/api/notificacion/1
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMTMxMywiZXhwIjoxNzQwNzA2MTEzfQ._HNImbZTF9JunvZraJ87vhhYKZ3-eQOzzIkx4rDNdUc"
+  
+  "leido": 1
 }
 
-### 
-GET http://localhost:3000/api/usuario
+###
+DELETE   http://localhost:3000/api/guardado/1
 Content-Type: application/json
+
+{
+
+  "fechaguardada": "2024-02-16T12:00:00"
+}
+
+###
+DELETE   http://localhost:3000/api/metododepago/2
+Content-Type: application/json
+
+{
+ 
+  "tipo": "paypal"
+}
+
+###
+DELETE   http://localhost:3000/api/tarjeta/2
+Content-Type: application/json
+
+{
+ 
+  "cvv": "213"
+}
+
+###
+DELETE   http://localhost:3000/api/movimiento/2
+Content-Type: application/json
+
+{
+  "montototal": 300.50,
+  "iva": 12.08
+}
+
+###
+DELETE   http://localhost:3000/api/listadecategoria/2
+Content-Type: application/json
+
+{
+  "categoria_idcategoria": 2
+}

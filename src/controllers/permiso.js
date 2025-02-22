@@ -13,14 +13,14 @@ module.exports = (connection) => {
 
         consultarId: async (req, res) => {
             const { idpermiso } = req.params;
-            const id = parseInt(idpermiso, 10); 
+            const id = parseInt(idpermiso, 10);
 
             if (isNaN(id)) {
                 return res.status(400).json({ message: 'ID no válido' });
             }
 
             try {
-                const [rows] = await connection.promise().query('SELECT * FROM permiso WHERE idpermiso = ? AND eliminado = ?', [id, 0]);
+                const [rows] = await connection.promise().query('SELECT * FROM permiso WHERE idpermiso = ? AND eliminado = ?', [idpermiso, 0]);
 
                 if (rows.length === 0) {
                     return res.status(404).json({ message: 'Permiso no encontrado' });
@@ -37,6 +37,11 @@ module.exports = (connection) => {
             const { nombre, idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado } = req.body;
 
             try {
+                const valoresPermitidos = ['Crear', 'Consultar', 'Actualizar', 'Eliminar'];
+                if (!valoresPermitidos.includes(nombre)) {
+                    return res.status(400).json({ message: 'Valor de nombre no válido' });
+                }
+
 
                 const [result] = await connection.promise().query(
                     'INSERT INTO permiso ( nombre,  idcreador, idactualizacion, fechacreacion, fechaactualizacion, eliminado) VALUES (?, ?, ?, ?, ?, ?)',
@@ -96,7 +101,7 @@ module.exports = (connection) => {
                 }
 
                 query += updates.join(', ') + ' WHERE idpermiso = ?';
-                params.push(id);
+                params.push(idpermiso);
 
                 const [result] = await connection.promise().query(query, params);
 

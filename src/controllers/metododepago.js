@@ -2,7 +2,7 @@ module.exports = (connection) => {
   return {
     consultar: async (req, res) => {
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM metodo_pago WHERE eliminado = ?', [false]);
+        const [rows] = await connection.promise().query('SELECT * FROM metododepago WHERE eliminado = ?', [false]);
         res.status(200).json(rows);
       } catch (error) {
         console.error('Error:', error);
@@ -15,7 +15,7 @@ module.exports = (connection) => {
       const { id } = req.params;
 
       try {
-        const [rows] = await connection.promise().query('SELECT * FROM metodo_pago WHERE idmetodo_pago = ? AND eliminado = ?', [id, 0]);
+        const [rows] = await connection.promise().query('SELECT * FROM metododepago WHERE idmetodo_pago = ? AND eliminado = ?', [id, 0]);
 
         if (rows.length === 0) {
           return res.status(404).json({ message: 'Método de pago no encontrada' });
@@ -40,7 +40,7 @@ module.exports = (connection) => {
           return res.status(400).json({ message: 'El cliente especificado no existe' });
         }
         const [result] = await connection.promise().query(
-          'INSERT INTO metodo_pago (cliente_idcliente, tipo, eliminado) VALUES (?, ?, ?)',
+          'INSERT INTO metododepago (cliente_idcliente, tipo, eliminado) VALUES (?, ?, ?)',
           [cliente_idcliente, tipo, 0]
         );
 
@@ -55,7 +55,7 @@ module.exports = (connection) => {
       const { cliente_idcliente, tipo } = req.body;
 
       try {
-        let query = 'UPDATE metodo_pago SET ';
+        let query = 'UPDATE metododepago SET ';
         const updates = [];
         const params = [];
 
@@ -74,7 +74,7 @@ module.exports = (connection) => {
           return res.status(400).json({ message: 'Sin información' });
         }
 
-        query += updates.join(', ') + ' WHERE idmetodo_pago = ?';
+        query += updates.join(', ') + ' WHERE idmetododepago = ?';
         params.push(id);
 
         const [result] = await connection.promise().query(query, params);
@@ -89,13 +89,13 @@ module.exports = (connection) => {
         res.status(500).json({ message: 'Error' });
       }
     }, eliminarMetododepago: async (req, res) => {
-      const { idguardado } = req.params;
+      const { id } = req.params;
 
       try {
 
         const [result] = await connection.promise().query(
           'UPDATE metododepago SET eliminado = ? WHERE idmetododepago = ?',
-          [true, idguardado]
+          [true, id]
         );
 
         if (result.affectedRows === 0) {

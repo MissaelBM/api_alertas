@@ -1,6 +1,6 @@
 const express = require('express');
 const permisoController = require('../controllers/permiso');
-
+const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (connection) => {

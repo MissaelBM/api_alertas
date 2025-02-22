@@ -30,7 +30,7 @@ module.exports = (connection) => {
         },
 
         movimiento: async (req, res) => {
-            const { cliente_idcliente, metodo_pago_idmetodo_pago, promocion_idpromocion, fechamoviento, montototal, iva } = req.body;
+            const { cliente_idcliente, metododepago_idmetododepago, promocion_idpromocion, fechamoviento, montototal, iva } = req.body;
 
             try {
                 const [clienteResult] = await connection.promise().query(
@@ -53,15 +53,15 @@ module.exports = (connection) => {
 
                 const [promocionResult] = await connection.promise().query(
                     'SELECT idpromocion FROM promocion WHERE idpromocion = ?',
-                    [promocionResult]
+                    [promocion_idpromocion]
                 );
                 if (promocionResult.length === 0) {
                     return res.status(400).json({ message: 'La promoción especificado no existe' });
                 }
 
                 const [result] = await connection.promise().query(
-                    'INSERT INTO movimiento (cliente_idcliente, metodo_pago_idmetodo_pago, promocion_idpromocion, fechamoviento,  montototal,iva, eliminado) VALUES (?, ?, ?, ?, ?,?,?)',
-                    [cliente_idcliente, metodo_pago_idmetodo_pago, promocion_idpromocion, fechamoviento, montototal, iva, 0]
+                    'INSERT INTO movimiento (cliente_idcliente, metododepago_idmetododepago, promocion_idpromocion, fechamoviento,  montototal,iva, eliminado) VALUES (?, ?, ?, ?, ?,?,?)',
+                    [cliente_idcliente, metododepago_idmetododepago, promocion_idpromocion, fechamoviento, montototal, iva, 0]
                 );
 
                 res.status(201).json({ message: 'Movimiento registrado', movimientoId: result.insertId });
@@ -86,7 +86,7 @@ module.exports = (connection) => {
                 }
 
                 if (metodo_pago_idmetodo_pago) {
-                    updates.push('metodo_pago_idmetodo_pago = ?');
+                    updates.push('metododepago_idmetododepago = ?');
                     params.push(metodo_pago_idmetodo_pago);
                 }
                 if (promocion_idpromocion) {

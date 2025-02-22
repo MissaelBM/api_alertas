@@ -109,13 +109,13 @@ module.exports = (connection) => {
         },
   
         eliminarCliente: async (req, res) => {
-            const { idcliente } = req.params;
+            const { id } = req.params;
   
             try {
                 
                 const [result] = await connection.promise().query(
                     'UPDATE cliente SET eliminado = ? WHERE idcliente = ?',
-                    [true, idcliente]
+                    [true, id]
                 );
   
                 if (result.affectedRows === 0) {

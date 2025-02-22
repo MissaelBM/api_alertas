@@ -60,7 +60,7 @@ module.exports = (connection) => {
       }
     },
     actualizarListadecategoria: async (req, res) => {
-      const { idlistadecategoria } = req.params;
+      const { id } = req.params;
       const { cliente_idcliente, categoria_idcategoria } = req.body;
 
       try {
@@ -85,7 +85,7 @@ module.exports = (connection) => {
         }
 
         query += updates.join(', ') + ' WHERE idlistadecategoria  = ?';
-        params.push(idlistadecategoria);
+        params.push(id);
 
         const [result] = await connection.promise().query(query, params);
 
@@ -101,13 +101,13 @@ module.exports = (connection) => {
     },
 
     eliminarListadecategoria: async (req, res) => {
-      const { idlistadecategoria } = req.params;
+      const { id } = req.params;
 
       try {
 
         const [result] = await connection.promise().query(
           'UPDATE listadecategorias SET eliminado = ? WHERE idlistadecategoria = ?',
-          [1, idlistadecategoria]
+          [1, id]
         );
 
         if (result.affectedRows === 0) {
