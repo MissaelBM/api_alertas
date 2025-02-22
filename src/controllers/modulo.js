@@ -145,7 +145,7 @@ module.exports = (connection) => {
             try {
                 const [result] = await connection.promise().query(
                     'UPDATE permiso SET eliminado = ? WHERE idpermiso = ?',
-                    [true, id]
+                    [1, id]
                 );
 
                 if (result.affectedRows === 0) {

@@ -115,7 +115,7 @@ module.exports = (connection) => {
                 
                 const [result] = await connection.promise().query(
                     'UPDATE cliente SET eliminado = ? WHERE idcliente = ?',
-                    [true, id]
+                    [1, id]
                 );
   
                 if (result.affectedRows === 0) {
