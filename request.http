@@ -1,45 +1,6 @@
-<<<<<<< HEAD
-### Obtener todos los clientes
-GET http://localhost:3000/api/cliente
-Content-Type: application/json
-
-###
-
-### Obtener un cliente por ID
-GET http://localhost:3000/api/cliente/1
-Content-Type: application/json
-
-###
-
-### Crear un nuevo usuario
-POST http://localhost:3000/api/usuario
-Content-Type: application/json
-
-{
-  "rol_idrol": 1,
-  "email": "hola@gmail.com",
-  "contraseña": "1234",
-  "fechacreacion": "2025-02-15T12:00:00",
-  "fechaactualización": "2025-02-15T12:00:00",
-  "idcreador": 2,
-  "idactualizacion": 2,
-  "eliminado": 0
-}
-
-### Crear un nuevo cliente
-POST http://localhost:3000/api/cliente
-Content-Type: application/json
-
-{
-  "usuario_idusuario": 1,
-  "nombre": "Cliente Prueba",
-  "telefono": "123456789",
-  "ubicacion": { "x": 40.7128, "y": -74.0060 },
-  "eliminado": 0
-=======
-DELETE    http://localhost:3000/api/permiso/2  
+GET   http://localhost:3000/api/permiso 
 Content-Type: application/json  
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDAyNTYzMzYsImV4cCI6MTc0MDI1NzIzNn0.UswJttRK1c8ACTP2DHc2TzzMknWbJAVSwqZ-gXk9C1Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoiYWRtaW5AZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsIm5vbWJyZSI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NDA1NTI2NDksImV4cCI6MTc0MDU1MzU0OX0.5W-8kor16a3WfE89CDpeCrLeVdvvp_8QzyrYLlbsDDc
 
 {
 
@@ -106,31 +67,10 @@ Content-Type: application/json
 {
   "email": "admin@ejemplo.com",
   "contraseña": "password123"
->>>>>>> missael
 }
 
 
 ###
-<<<<<<< HEAD
-
-### Actualizar un cliente por ID
-PATCH http://localhost:3000/api/cliente/13
-Content-Type: application/json
-
-{
-  "usuario_idusuario": 1,
-  "nombre": "Cliente Actualizado",
-  "telefono": "987654321",
-  "ubicacion": { "x": 40.7128, "y": -74.0060 },
-  "eliminado": 1
-}
-
-###
-
-### Eliminar un cliente por ID
-DELETE http://localhost:3000/api/cliente/6
-Content-Type: application/json
-=======
 GET http://localhost:3000/api/usuario/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImVtYWlsIjoidXN1YXJpbzFAZWplbXBsby5jb20iLCJyb2xfaWRyb2wiOjEsImlhdCI6MTc0MDEwMDUyMSwiZXhwIjoxNzQwNzA1MzIxfQ.px-9MMSmFYzMjw-1BaTCvg99z1ydm8T--N-kqyGEnf4
 Content-Type: application/json
 
@@ -305,4 +245,3 @@ Content-Type: application/json
 {
   "categoria_idcategoria": 2
 }
->>>>>>> missael
