@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const authenticateToken = require('./src/middleware/auth');
+require('dotenv').config();
 const userRoutes = require('./src/routes/usuario');
 const rolRoutes = require('./src/routes/rol');
 const empresaRoutes = require('./src/routes/empresa');
@@ -25,11 +26,11 @@ app.use(bodyParser.json());
 
 
 const connection = mysql.createConnection({
-    host: '127.0.0.1',
-    port: 3306,
-    user: 'root',
-    password: 'Fidel12-',
-    database: 'alertas'
+    host: process.env.DB_HOST,
+    port: process.env.PORT || 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 connection.connect((err) => {
