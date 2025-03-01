@@ -19,7 +19,7 @@ const tarjetaRoutes = require('./src/routes/tarjeta');
 const listadecategoriaRoutes = require('./src/routes/listadecategoria');
 
 const app = express();
-const port = 3000;
+//const port = 3000;
 
 
 app.use(bodyParser.json());
